@@ -1,10 +1,9 @@
 "use server";
 
-import { PrismaClient } from "@/app/generated/prisma";
 import { updateProductSchema } from "@/app/lib/zodSchema";
 import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 
-const prisma = new PrismaClient();
 
 export async function GET(
   _req: Request,

@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
@@ -12,21 +11,15 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { categoryInput, categorySchema } from "@/app/lib/zodSchema"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { api } from "@/app/lib/apiClient"
 import { toast } from "sonner"
 
-interface Category {
-    id: string
-    name: string
-}
+import { Category } from "@prisma/client";
+
 
 export default function CategoryManager() {
-    const [categories, setCategories] = useState<Category[]>([
-        { id: "1", name: "Technology" },
-        { id: "2", name: "Design" },
-        { id: "3", name: "Marketing" },
-    ])
+    
     const [isDialogOpen, setIsDialogOpen] = useState(false)
 
     const form = useForm<categoryInput>({
@@ -37,8 +30,17 @@ export default function CategoryManager() {
     })
     const queryClient = useQueryClient() 
 
+    const {data:categories} = useQuery({
+        queryKey:["categories"],
+        queryFn: async () =>{
+            const res = await api.get("/category");
+            return res.data
+        },
+        retry:1
+    })
+
     const createMutation =  useMutation({
-        mutationFn: async(data:string)=>{
+        mutationFn: async(data:categoryInput)=>{
             const res = await api.post("/category",data);
             return res.data
         },
@@ -69,8 +71,7 @@ export default function CategoryManager() {
     })
     const onSubmit = async (data: categoryInput) => {
         console.log(data);
-
-        await createMutation.mutate(data.name)
+        await createMutation.mutate(data)
     }
 
 
@@ -135,18 +136,18 @@ export default function CategoryManager() {
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                         <Tag className="w-5 h-5" />
-                        Categories ({categories.length})
+                        Categories ({categories?.length})
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    {categories.length === 0 ? (
+                    {categories?.length === 0 ? (
                         <div className="text-center py-8 text-muted-foreground">
                             <Tag className="w-12 h-12 mx-auto mb-4 opacity-50" />
                             <p>No categories yet. Add your first category to get started.</p>
                         </div>
                     ) : (
                         <div className="grid gap-3">
-                            {categories.map((category) => (
+                            {categories?.map((category:Category) => (
                                 <div
                                     key={category.id}
                                     className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors"
