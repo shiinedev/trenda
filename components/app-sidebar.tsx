@@ -5,7 +5,6 @@ import {
   IconChartBar,
   IconDashboard,
   IconFolder,
-  IconInnerShadowTop,
   IconListDetails,
   IconCategory
 } from "@tabler/icons-react"
@@ -22,6 +21,7 @@ import {
 } from "@/components/ui/sidebar"
 import { useSession } from "@/lib/auth-client"
 import Link from "next/link"
+import { Sparkles } from "lucide-react"
 
 const data = {
   navMain: [
@@ -66,10 +66,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <Link href="/">
-                <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">Trenda</span>
-              </Link>
+              <Link href="/" className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+              <Sparkles className="w-5 h-5 text-white" />
+            </div>
+            <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Trenda
+            </span>
+          </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

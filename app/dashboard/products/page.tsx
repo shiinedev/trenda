@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { Edit, Trash2 } from "lucide-react"
+import { ShoppingCart, Edit, Trash2 } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -54,17 +54,24 @@ const ProductsLits = () => {
 
 
   return (
-    <main className="p-6">
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>Product Management</CardTitle>
-           <Button asChild>
+    <main className="container p-6">
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="text-2xl font-bold">Product Manager</h1>
+          <p className="text-muted-foreground mt-2">Manage your Products</p>
+        </div>
+        <Button asChild>
             <Link href="/dashboard/products/new">
             Add New Product
             </Link>
            </Button>
-          </div>
+        </div>
+      <Card>
+      <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <ShoppingCart className="w-5 h-5" />
+            Products ({products?.data?.length | 0})
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -72,17 +79,17 @@ const ProductsLits = () => {
               <Link href={`/products/${product._id}`} key={product._id} className="flex items-center space-x-4 p-4 border rounded-lg">
                 <Image
                   src={product.images?.[0] ?? ""}
-                  alt={product.productName }
+                  alt={product.name }
                   width={100}
                   height={100}
                   className="rounded"
                 />
                 <div className="flex-1">
-                  <h3 className="font-semibold text-slate-900">{product.productName}</h3>
+                  <h3 className="font-semibold text-slate-900">{product.name}</h3>
                   <p className="text-slate-600">${product.price}</p>
                   <div className="flex items-center space-x-2 mt-1">
                    {
-                    product.featured &&
+                    product.isFeatured &&
                     <Badge variant="default">
                       featured
                     </Badge>

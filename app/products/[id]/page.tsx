@@ -51,7 +51,7 @@ export default function ProductDetailPage() {
     const handleAddCart = () => {
         const item = {
             id: product?._id,
-            name: product?.productName,
+            name: product?.name,
             price: product?.price,
             quantity,
             stock: product?.stock,
@@ -103,7 +103,7 @@ export default function ProductDetailPage() {
                             {product.category}
                         </Link>
                         <span>/</span>
-                        <span className="text-slate-900 font-medium">{product.productName}</span>
+                        <span className="text-slate-900 font-medium">{product.name}</span>
                     </nav>
 
                     <div className="grid lg:grid-cols-2 gap-12 mb-16">
@@ -113,7 +113,7 @@ export default function ProductDetailPage() {
                             <div className="relative overflow-hidden rounded-2xl bg-white border border-slate-200">
                                 <Image
                                     src={product.images?.[selectedImage] || "/placeholder.svg"}
-                                    alt={product.productName}
+                                    alt={product.name}
                                     width={600}
                                     height={600}
                                     className="w-full h-96 lg:h-[500px] object-cover transition-all duration-300"
@@ -142,7 +142,7 @@ export default function ProductDetailPage() {
                                     >
                                         <Image
                                             src={image || "/placeholder.svg"}
-                                            alt={`${product.productName} view ${index + 1}`}
+                                            alt={`${product.name} view ${index + 1}`}
                                             width={120}
                                             height={120}
                                             className="w-full h-20 object-cover"
@@ -159,7 +159,7 @@ export default function ProductDetailPage() {
                                     {/* <Badge variant="outline">{product.brand}</Badge> */}
                                     <Badge variant="outline">{product.category}</Badge>
                                 </div>
-                                <h1 className="text-3xl font-bold text-slate-900 mb-2">{product.productName}</h1>
+                                <h1 className="text-3xl font-bold text-slate-900 mb-2">{product.name}</h1>
                                 <p className="text-slate-600 mb-4">{product.description}</p>
 
                                 <div className="flex items-center space-x-4 mb-4">

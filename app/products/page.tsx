@@ -19,75 +19,6 @@ export default function ProductsPage() {
     const [priceRange, setPriceRange] = useState([0, 1000])
     const [selectedCategories, setSelectedCategories] = useState<string[]>([])
 
-    //   const products = [
-    //     {
-    //       id: 1,
-    //       name: "Premium Wireless Headphones",
-    //       price: 299,
-    //       originalPrice: 399,
-    //       rating: 4.8,
-    //       reviews: 124,
-    //       image: "/placeholder.svg?height=300&width=300",
-    //       category: "Electronics",
-    //       badge: "AI Recommended",
-    //       description: "High-quality wireless headphones with noise cancellation",
-    //     },
-    //     {
-    //       id: 2,
-    //       name: "Smart Fitness Tracker",
-    //       price: 199,
-    //       rating: 4.6,
-    //       reviews: 89,
-    //       image: "/placeholder.svg?height=300&width=300",
-    //       category: "Electronics",
-    //       badge: "Best Seller",
-    //       description: "Advanced fitness tracking with heart rate monitoring",
-    //     },
-    //     {
-    //       id: 3,
-    //       name: "Organic Cotton T-Shirt",
-    //       price: 29,
-    //       rating: 4.4,
-    //       reviews: 67,
-    //       image: "/placeholder.svg?height=300&width=300",
-    //       category: "Fashion",
-    //       badge: "Eco-Friendly",
-    //       description: "Comfortable organic cotton t-shirt in various colors",
-    //     },
-    //     {
-    //       id: 4,
-    //       name: "Professional Coffee Maker",
-    //       price: 449,
-    //       rating: 4.9,
-    //       reviews: 156,
-    //       image: "/placeholder.svg?height=300&width=300",
-    //       category: "Home",
-    //       badge: "Editor's Choice",
-    //       description: "Professional-grade coffee maker for perfect brews",
-    //     },
-    //     {
-    //       id: 5,
-    //       name: "Ergonomic Office Chair",
-    //       price: 599,
-    //       rating: 4.7,
-    //       reviews: 203,
-    //       image: "/placeholder.svg?height=300&width=300",
-    //       category: "Furniture",
-    //       badge: "Premium",
-    //       description: "Ergonomic design for all-day comfort and productivity",
-    //     },
-    //     {
-    //       id: 6,
-    //       name: "Wireless Gaming Mouse",
-    //       price: 89,
-    //       rating: 4.5,
-    //       reviews: 78,
-    //       image: "/placeholder.svg?height=300&width=300",
-    //       category: "Electronics",
-    //       badge: "Gaming",
-    //       description: "High-precision wireless gaming mouse with RGB lighting",
-    //     },
-    //   ]
     const { data, isLoading } = useQuery({
         queryKey: ["products"],
         queryFn: () => api.get("/products"),
@@ -221,7 +152,7 @@ export default function ProductsPage() {
                                                         {/* <Badge className="absolute top-3 left-3 bg-blue-600">{product.badge}</Badge> */}
                                                     </div>
                                                     <CardContent className="pb-4">
-                                                        <h3 className="font-semibold text-slate-900 line-clamp-2">{product.productName}</h3>
+                                                        <h3 className="font-semibold text-slate-900 line-clamp-2">{product.name}</h3>
                                                         <p className="text-sm text-slate-600 truncate">{product.description}</p>
                                                         <div className="flex items-center space-x-2">
                                                             <div className="flex items-center space-x-1">
@@ -249,7 +180,7 @@ export default function ProductsPage() {
                                                     <div className="relative overflow-hidden rounded-lg flex-shrink-0">
                                                         <Image
                                                             src={product.images?.[0] || "/placeholder.svg"}
-                                                            alt={product.productName}
+                                                            alt={product.name}
                                                             width={100}
                                                             height={100}
                                                             className="w-30 h-30 object-cover"
@@ -258,7 +189,7 @@ export default function ProductsPage() {
                                                     </div>
                                                     <CardContent className="flex-1 space-y-2">
                                                         
-                                                            <h3 className="font-semibold text-slate-900">{product.productName}</h3>
+                                                            <h3 className="font-semibold text-slate-900">{product.name}</h3>
                                                             <p className="text-sm text-slate-600">{product.description}</p>
                                                             <div className="flex items-center space-x-2">
                                                                 <div className="flex items-center space-x-1">
