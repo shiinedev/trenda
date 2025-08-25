@@ -1,0 +1,186 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(auto()) @map("_id") @db.ObjectId 
+  name          String
+  email         String
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  role          Role      @default(USER)
+  sessions      Session[]
+  accounts      Account[]
+  reviews       Review[]
+  orders        Order[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+
+model Session {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  expiresAt DateTime
+  token     String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("account")
+}
+
+model Verification {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("verification")
+}
+
+
+
+model Product {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  price       Float
+  stock       Int
+  category    Category   @relation(fields: [categoryId], references: [id])
+  categoryId  String     @db.ObjectId
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  images      ProductImage[]
+  isFeatured  Boolean
+  reviews     Review[]
+  orderItems  OrderItem[]
+}
+
+model ProductImage {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  url       String
+  productId String   @db.ObjectId
+  product   Product  @relation(fields: [productId], references: [id])
+}
+
+model Category {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  name      String     @unique
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  // Relationships
+  products  Product[]
+}
+
+model Review {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  rating    Int
+  comment   String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relationships
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @db.ObjectId
+
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String   @db.ObjectId
+}
+
+model Order {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  status     OrderStatus @default(PENDING)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  // Relationships
+  user       User        @relation(fields: [userId], references: [id])
+  userId     String      @db.ObjectId
+  items      OrderItem[]
+  payment    Payment?
+}
+
+model OrderItem {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  quantity  Int
+  price     Float
+
+  // Relationships
+  order     Order    @relation(fields: [orderId], references: [id])
+  orderId   String   @db.ObjectId
+
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String   @db.ObjectId
+}
+
+model Payment {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  amount    Float
+  method    String
+  status    PaymentStatus @default(PENDING)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relationships
+  order     Order    @relation(fields: [orderId], references: [id])
+  orderId   String  @unique @db.ObjectId
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
