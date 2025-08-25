@@ -7,6 +7,7 @@ import {
   IconFolder,
   IconInnerShadowTop,
   IconListDetails,
+  IconCategory
 } from "@tabler/icons-react"
 import { NavMain } from "@/components/nav-main"
 import { NavUser } from "@/components/nav-user"
@@ -20,6 +21,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { useSession } from "@/lib/auth-client"
+import Link from "next/link"
 
 const data = {
   navMain: [
@@ -37,6 +39,11 @@ const data = {
       title: "Products",
       url: "/dashboard/products",
       icon: IconChartBar,
+    },
+    {
+      title: "Category",
+      url: "/dashboard/category",
+      icon: IconCategory,
     },
     {
       title: "Orders",
@@ -59,10 +66,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="#">
+              <Link href="/">
                 <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">Acme Inc.</span>
-              </a>
+                <span className="text-base font-semibold">Trenda</span>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
