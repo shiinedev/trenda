@@ -1,7 +1,7 @@
 "use client"
 
 import { api } from "@/app/lib/apiClient"
-import { product } from "@/app/types/products"
+import { ProductsWithRelations } from "@/app/types/prisma"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -20,11 +20,13 @@ const ProductsLits = () => {
 
   const queryClient = useQueryClient()
 
-  const { data: products, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["products"],
     queryFn: () => api.get("/products"),
     retry: 1,
   })
+
+  const products:ProductsWithRelations[] = data?.data ?? []
 
   const deleteMutation = useMutation({
     mutationFn:async (id:string) =>{
@@ -70,15 +72,16 @@ const ProductsLits = () => {
       <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <ShoppingCart className="w-5 h-5" />
-            Products ({products?.data?.length | 0})
+            Products ({products?.length | 0})
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {products?.data &&  products.data.map((product:product) => (
-              <Link href={`/products/${product._id}`} key={product._id} className="flex items-center space-x-4 p-4 border rounded-lg">
+            {products.length > 0 && 
+             products.map((product:ProductsWithRelations) => (
+              <div key={product.id} className="flex items-center space-x-4 p-4 border rounded-lg">
                 <Image
-                  src={product.images?.[0] ?? ""}
+                  src={product.images?.[0].url ?? ""}
                   alt={product.name }
                   width={100}
                   height={100}
@@ -101,16 +104,16 @@ const ProductsLits = () => {
                   {/* <Button variant="outline" size="sm">
                     <Eye className="h-4 w-4" />
                   </Button> */}
-                  <Button variant="outline" size="sm" onClick={() => router.push(`/dashboard/products/${product._id}`)}>
+                  <Button variant="outline" size="sm" onClick={() => router.push(`/dashboard/products/${product.id}`)}>
                     <Edit className="h-4 w-4" />
                   </Button>
                   <Button variant="outline" size="sm" 
-                  onClick={() => handleDelete(product._id)}
+                  onClick={() => handleDelete(product.id)}
                   className="text-red-600 hover:text-red-700 bg-transparent">
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         </CardContent>

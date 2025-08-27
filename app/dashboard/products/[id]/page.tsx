@@ -16,7 +16,6 @@ const ProductEdit = ({params}:{params:{id:string}}) => {
         },
         retry:1
     })
-    console.log(data);
     
 
     if(isLoading) return <p>loading...</p>

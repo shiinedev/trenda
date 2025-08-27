@@ -20,9 +20,10 @@ import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
 import { useQuery } from "@tanstack/react-query"
 import { api } from "@/app/lib/apiClient"
-import { product } from "@/app/types/products"
 import { Navigation } from "@/components/layout/Navigation"
 import { useCartStore } from "@/app/stores/useCart"
+import { ProductsWithRelations } from "@/app/types/prisma"
+import { getAverageRating } from "@/app/lib/getAverageRating"
 
 
 export default function ProductDetailPage() {
@@ -45,17 +46,17 @@ export default function ProductDetailPage() {
         retry: 1
     })
 
-    const product: product = data;
+    const product: ProductsWithRelations = data;
 
 
     const handleAddCart = () => {
         const item = {
-            id: product?._id,
+            id: product?.id,
             name: product?.name,
             price: product?.price,
             quantity,
             stock: product?.stock,
-            image: product?.images?.[0]
+            image: product?.images?.[0].url
         }
         addItem(item);
         router.push("/cart")
@@ -100,7 +101,7 @@ export default function ProductDetailPage() {
                         </Link>
                         <span>/</span>
                         <Link href={`/categories`} className="hover:text-slate-900">
-                            {product.category}
+                            {product.category.name}
                         </Link>
                         <span>/</span>
                         <span className="text-slate-900 font-medium">{product.name}</span>
@@ -112,7 +113,7 @@ export default function ProductDetailPage() {
                             {/* Main Image */}
                             <div className="relative overflow-hidden rounded-2xl bg-white border border-slate-200">
                                 <Image
-                                    src={product.images?.[selectedImage] || "/placeholder.svg"}
+                                    src={product.images?.[selectedImage].url || "/placeholder.svg"}
                                     alt={product.name}
                                     width={600}
                                     height={600}
@@ -141,7 +142,7 @@ export default function ProductDetailPage() {
                                             }`}
                                     >
                                         <Image
-                                            src={image || "/placeholder.svg"}
+                                            src={image.url || "/placeholder.svg"}
                                             alt={`${product.name} view ${index + 1}`}
                                             width={120}
                                             height={120}
@@ -157,7 +158,7 @@ export default function ProductDetailPage() {
                             <div>
                                 <div className="flex items-center space-x-2 mb-2">
                                     {/* <Badge variant="outline">{product.brand}</Badge> */}
-                                    <Badge variant="outline">{product.category}</Badge>
+                                    <Badge variant="outline">{product.category.name}</Badge>
                                 </div>
                                 <h1 className="text-3xl font-bold text-slate-900 mb-2">{product.name}</h1>
                                 <p className="text-slate-600 mb-4">{product.description}</p>
@@ -167,13 +168,13 @@ export default function ProductDetailPage() {
                                         {[...Array(5)].map((_, i) => (
                                             <Star
                                                 key={i}
-                                                className={`h-5 w-5 ${i < Math.floor(4.5) ? "fill-yellow-400 text-yellow-400" : "text-slate-300"
+                                                className={`h-5 w-5 ${i < Math.floor(getAverageRating(product.reviews)) ? "fill-yellow-400 text-yellow-400" : "text-slate-300"
                                                     }`}
                                             />
                                         ))}
-                                        <span className="text-slate-600 ml-2">4.5</span>
+                                        <span className="text-slate-600 ml-2">{getAverageRating(product.reviews)}</span>
                                     </div>
-                                    <span className="text-slate-500">(120 reviews)</span>
+                                    <span className="text-slate-500">({getAverageRating(product.reviews)})</span>
                                     <span className="text-slate-500">•</span>
                                     <span className={`font-medium ${product.stock > 0 ? "text-green-600" : "text-red-600"}`}>
                                         {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}

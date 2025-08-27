@@ -3,14 +3,16 @@
 import { productSchema } from "@/app/lib/zodSchema";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { ProductsWithRelations } from "@/app/types/prisma";
 
 export async function GET() {
   try {
 
-    const products = await prisma.product.findMany({
+    const products :ProductsWithRelations[] = await prisma.product.findMany({
       include:{
         reviews:true,
         category:true,
+        images:true
       },
     })
 
