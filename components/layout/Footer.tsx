@@ -71,13 +71,11 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-muted-foreground text-sm">
-            © 2024 AI Commerce. All rights reserved.
+        <div className="border-t mt-8 pt-8 flex justify-between items-center">
+          <p className="text-muted-foreground text-sm text-center">
+            © 2025 Trenda. All rights reserved.
           </p>
-          <p className="text-muted-foreground text-sm">
-            Powered by advanced AI technology
-          </p>
+         
         </div>
       </div>
     </footer>

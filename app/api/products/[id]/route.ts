@@ -9,12 +9,15 @@ export async function GET(
   _req: Request,
   { params }: { params: { id: string } }
 ) {
-  if (!params.id)
+
+
+  const {id} =  await params;
+  if (!id)
     return NextResponse.json({ error: "id not found" }, { status: 404 });
 
   try {
     const product = await prisma.product.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         category: true,
         images: true,

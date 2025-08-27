@@ -45,13 +45,15 @@ export default  function FeaturedProducts() {
         <div className="flex items-center justify-between mb-12">
           <div>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Featured Products
+              Trended Products
             </h2>
             <p className="text-muted-foreground text-lg">
-              Handpicked by our AI for you
+              our trended products
             </p>
           </div>
-          <Button>View All</Button>
+          <Button asChild>
+            <Link href="/products">View All</Link>
+          </Button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -109,11 +111,12 @@ export default  function FeaturedProducts() {
 
               <CardContent className="p-4">
                 <div className="space-y-2">
-                  <p className="text-xs text-muted-foreground uppercase tracking-wide">
-                    {product.category.name}
-                  </p>
-                  <h3 className="font-semibold text-sm leading-tight line-clamp-2">
+                  <Badge variant={"secondary"} className='text-xs text-muted-foreground uppercase tracking-wide'>{product.category.name}</Badge>
+                  <p className="font-semibold text-sm leading-tight line-clamp-2  capitalize">
                     {product.name}
+                  </p>
+                  <h3 className="text-sm text-muted leading-tight line-clamp-2 truncate">
+                    {product.description}
                   </h3>
                   
                   {/* Rating */}

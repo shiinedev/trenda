@@ -87,8 +87,9 @@ const ProductsLits = () => {
                   height={100}
                   className="rounded"
                 />
-                <div className="flex-1">
+                <div className="flex-1 flex-wrap">
                   <h3 className="font-semibold text-slate-900">{product.name}</h3>
+                  <h3 className="font-semibold text-slate-600 truncate">{product.description}</h3>
                   <p className="text-slate-600">${product.price}</p>
                   <div className="flex items-center space-x-2 mt-1">
                    {
