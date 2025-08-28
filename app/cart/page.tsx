@@ -11,12 +11,15 @@ import Image from "next/image"
 import Link from "next/link"
 import { Navigation } from "@/components/layout/Navigation"
 import { useCartStore } from "../stores/useCart"
+import { useRouter } from "next/navigation"
+
 
 export default function CartPage() {
  
 const {items,updateQuantity,removeItem,getItemCount,getShipping,getSubtotal,getTax,getTotal,} = useCartStore();
 
   const [promoCode, setPromoCode] = useState("")
+  const router = useRouter()
 
  
   return (
@@ -134,19 +137,20 @@ const {items,updateQuantity,removeItem,getItemCount,getShipping,getSubtotal,getT
                 <div className="mt-6 space-y-4">
                   <div className="flex space-x-2">
                     <Input placeholder="Promo code" value={promoCode} onChange={(e) => setPromoCode(e.target.value)} />
-                    <Button variant="outline">Apply</Button>
+                    <Button variant="outline" disabled={promoCode === ""}>Apply</Button>
                   </div>
 
-                  <Link href="/checkout">
+              
                     <Button
                       className="w-full"
                       size="lg"
                       disabled={getItemCount() === 0 || items.some((item) => item.stock === 0)}
+                      onClick={() => router.push("/checkout")}
                     >
                       Proceed to Checkout
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
-                  </Link>
+                 
 
                   <p className="text-xs text-slate-500 text-center">Free shipping on orders over $500</p>
                 </div>
