@@ -28,8 +28,8 @@ export const orderSchema = z.object({
   email:z.email("invalid email"),
   phone:z.string().min(8,"phone is not valid").max(20,"phone is not valid"),
   postalCode:z.string().min(1,"postal code is required"),
-  address:z.string().min(3,"address is required")
-
+  address:z.string().min(3,"address is required"),
+  status:z.enum(["PENDING","PAID","SHIPPED","DELIVERED","CANCELLED"]).default("PENDING").optional()
 })
 
 export type OrderInput = z.infer<typeof orderSchema>

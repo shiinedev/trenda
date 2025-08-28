@@ -18,12 +18,15 @@ import { FormField, FormItem, FormLabel, FormMessage, Form, FormControl } from "
 import { toast } from "sonner"
 import { useMutation } from "@tanstack/react-query"
 import { api } from "../lib/apiClient"
+import { useSession } from "@/lib/auth-client"
 
 export default function CheckoutPage() {
 
   const [shippingMethod, setShippingMethod] = useState("standard")
 
-  const {items,getSubtotal,getShipping,getTax,getTotal} = useCartStore();
+  const {data:session} = useSession()
+
+  const {items,getSubtotal,getShipping,getTax,getTotal,clearCart} = useCartStore();
 
   const form = useForm<OrderInput>({
     resolver:zodResolver(orderSchema),
@@ -32,17 +35,20 @@ export default function CheckoutPage() {
       email:"",
       phone:"",
       address:"",
-      postalCode:""
+      postalCode:"",
+      status:"PENDING"
     }
   })
 
   const createOrder = useMutation({
     mutationFn:async (data:OrderInput) =>{
-      const res = await api.post("/order",data);
+      const res = await api.post("/orders",data);
       return res.data
     },
     onSuccess:()=>{
       toast.success("order completed successfully");
+      clearCart();
+      form.reset()
     },
     onError:(err) =>{
       console.log("order error",err);
@@ -53,14 +59,28 @@ export default function CheckoutPage() {
   const {isSubmitting,isSubmitSuccessful} = form.formState
 
   const onSubmit = async (data:OrderInput) =>{
-    console.log(data);
+   
     if(items.length === 0){
       toast.warning("No items to order please Back to products an select")
       return
     }
 
-    await createOrder.mutate(data)
+    const orderItem = {
+      ...data,
+      items: items.map(item => ({
+          productId:item.id,
+          name:item.name,
+          quantity:item.quantity,
+          price:item.price
+        
+      })),
+      userId:session?.user?.id
+    }
 
+    console.log("order",orderItem);
+    
+
+     createOrder.mutate(orderItem)
     
   }
 

@@ -28,7 +28,7 @@ export default function RootLayout({
         <Providers>
         <main className="min-h-screen"> {children}</main>
         </Providers>
-        <Toaster richColors closeButton />
+        <Toaster richColors closeButton position="top-right" />
       </body>
     </html>
   )
