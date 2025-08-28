@@ -16,11 +16,13 @@ import { api } from "@/app/lib/apiClient"
 import { toast } from "sonner"
 
 import { Category } from "@prisma/client";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 
 
 export default function CategoryManager() {
-    
+
     const [isDialogOpen, setIsDialogOpen] = useState(false)
+    const [open, setOpen] = useState(false)
 
     const form = useForm<categoryInput>({
         resolver: zodResolver(categorySchema),
@@ -28,45 +30,48 @@ export default function CategoryManager() {
             name: ""
         }
     })
-    const queryClient = useQueryClient() 
+    const queryClient = useQueryClient()
 
-    const {data:categories} = useQuery({
-        queryKey:["categories"],
-        queryFn: async () =>{
+    const { data: categories } = useQuery({
+        queryKey: ["categories"],
+        queryFn: async () => {
             const res = await api.get("/category");
             return res.data
         },
-        retry:1
+        retry: 1
     })
 
-    const createMutation =  useMutation({
-        mutationFn: async(data:categoryInput)=>{
-            const res = await api.post("/category",data);
+    const createMutation = useMutation({
+        mutationFn: async (data: categoryInput) => {
+            const res = await api.post("/category", data);
             return res.data
         },
-        onSuccess:() =>{
+        onSuccess: () => {
             toast.success("category created successfully");
-            queryClient.invalidateQueries({queryKey:["categories"]})
+            queryClient.invalidateQueries({ queryKey: ["categories"] })
+            form.reset();
+            setIsDialogOpen(false)
         },
-        onError:(err) =>{
+        onError: (err) => {
             toast.error("failed to create category");
             console.log(err);
         }
     })
 
     const deleteMutation = useMutation({
-        mutationFn:async (id:string) =>{
+        mutationFn: async (id: string) => {
             const res = await api.delete(`category/${id}`);
             return res.data
         },
-        onSuccess:()=>{
+        onSuccess: () => {
             toast.success("category deleted successfully");
-            queryClient.invalidateQueries({queryKey:["categories"]})
+            queryClient.invalidateQueries({ queryKey: ["categories"] })
+            setOpen(false)
         },
-        onError:(err) =>{
+        onError: (err) => {
             toast.error("error deleting category");
             console.log(err);
-            
+
         }
     })
     const onSubmit = async (data: categoryInput) => {
@@ -76,6 +81,7 @@ export default function CategoryManager() {
 
 
     const handleDelete = async (id: string) => {
+        
         await deleteMutation.mutateAsync(id)
     }
 
@@ -117,15 +123,15 @@ export default function CategoryManager() {
                                         </FormItem>
                                     )}
                                 />
-                               
-                            
 
-                            <div className="flex justify-end gap-2">
-                                <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
-                                    Cancel
-                                </Button>
-                                <Button type="submit">Add Category</Button>
-                            </div>
+
+
+                                <div className="flex justify-end gap-2">
+                                    <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
+                                        Cancel
+                                    </Button>
+                                    <Button type="submit">{createMutation.isPending ? "Adding..." : "Add Category"}</Button>
+                                </div>
                             </form>
                         </Form>
                     </DialogContent>
@@ -147,7 +153,7 @@ export default function CategoryManager() {
                         </div>
                     ) : (
                         <div className="grid gap-3">
-                            {categories?.map((category:Category) => (
+                            {categories?.map((category: Category) => (
                                 <div
                                     key={category.id}
                                     className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors"
@@ -160,11 +166,33 @@ export default function CategoryManager() {
                                         <Button
                                             variant="ghost"
                                             size="sm"
-                                            onClick={() => handleDelete(category.id)}
+                                            onClick={() => setOpen(true)}
                                             className="text-destructive hover:text-destructive"
                                         >
                                             Delete
                                         </Button>
+                                        <AlertDialog open={open} onOpenChange={() => setOpen(false)}>
+                                            <AlertDialogTrigger asChild>
+                                            </AlertDialogTrigger>
+                                            <AlertDialogContent>
+                                                <AlertDialogHeader>
+                                                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                                    <AlertDialogDescription>
+                                                        This will permanently delete category &quot;{category.name}&quot;
+                                                        and remove your data from our servers.
+                                                    </AlertDialogDescription>
+                                                </AlertDialogHeader>
+                                                <AlertDialogFooter>
+                                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                    <AlertDialogAction asChild>
+                                                        <Button variant={"destructive"} onClick={() => handleDelete(category.id)}>
+                                                            {deleteMutation.isPending ? "Deleting...":"Delete"}
+                                                        </Button>
+
+                                                    </AlertDialogAction>
+                                                </AlertDialogFooter>
+                                            </AlertDialogContent>
+                                        </AlertDialog>
                                     </div>
                                 </div>
                             ))}
@@ -172,9 +200,11 @@ export default function CategoryManager() {
                     )}
                 </CardContent>
             </Card>
+
         </main>
     )
 }
+
 
 
 

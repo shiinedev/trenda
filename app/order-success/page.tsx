@@ -166,7 +166,7 @@ export default function OrderSuccessPage() {
           
 
             {/* Support */}
-            <Card>
+            {/* <Card>
               <CardContent className="p-6">
                 <h3 className="font-semibold text-slate-900 mb-4">Need Help?</h3>
                 <div className="space-y-3 text-sm">
@@ -176,7 +176,7 @@ export default function OrderSuccessPage() {
                   </Button>
                 </div>
               </CardContent>
-            </Card>
+            </Card> */}
           </div>
         </div>
       </div>

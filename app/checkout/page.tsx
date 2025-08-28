@@ -55,9 +55,7 @@ export default function CheckoutPage() {
       toast.error("order is not completed!")
     }
   })
-  
-  const {isSubmitting,isSubmitSuccessful} = form.formState
-
+ 
   const onSubmit = async (data:OrderInput) =>{
    
     if(items.length === 0){
@@ -275,14 +273,14 @@ export default function CheckoutPage() {
                   className="w-full"
                   size="lg"
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={createOrder.isPending}
                 >
-                  {isSubmitting ? (
+                  {createOrder.isPending ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                       Processing Order...
                     </>
-                  ) : isSubmitSuccessful ? (
+                  ) : createOrder.isSuccess ? (
                     "Order Placed Successfully!"
                   ) : (
                     "Complete Order"
