@@ -127,7 +127,12 @@ model Review {
 }
 
 model Order {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  fullname   String
+  phone      String
+  email      String
+  address    String
+  postalCode String
   status     OrderStatus @default(PENDING)
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
@@ -142,6 +147,7 @@ model Order {
 model OrderItem {
   id   String @id @default(auto()) @map("_id") @db.ObjectId
   quantity  Int
+  name      String
   price     Float
 
   // Relationships

@@ -229,14 +229,12 @@ export default function ProductsPage() {
                                 ({product.reviews.length} reviews)
                               </span>
                             </div>
-                            <div className="flex items-center justify-between space-y-4">
+                            <div className="flex items-center justify-between">
                               <div className="flex items-center space-x-2">
                                 <span className="text-xl font-bold text-slate-900">
                                   ${product.price}
                                 </span>
-                                {/* {product.originalPrice && (
-                                                                <span className="text-sm text-slate-500 line-through">${product.originalPrice}</span>
-                                                            )} */}
+                                
                               </div>
                               <Button size="sm">Add to Cart</Button>
                             </div>
@@ -267,11 +265,11 @@ export default function ProductsPage() {
                               <div className="flex items-center space-x-1">
                                 <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                                 <span className="text-sm text-slate-600">
-                                  4.5
+                                 {getAverageRating(product.reviews)}
                                 </span>
                               </div>
                               <span className="text-sm text-slate-500">
-                                (120 reviews)
+                                ({product.reviews.length} reviews)
                               </span>
                             </div>
                             <div className="flex items-center justify-between">
@@ -279,9 +277,7 @@ export default function ProductsPage() {
                                 <span className="text-xl font-bold text-slate-900">
                                   ${product.price}
                                 </span>
-                                {/* {product.originalPrice && (
-                                                                <span className="text-sm text-slate-500 line-through">${product.originalPrice}</span>
-                                                            )} */}
+                                
                               </div>
                               <Button size="sm">Add to Cart</Button>
                             </div>

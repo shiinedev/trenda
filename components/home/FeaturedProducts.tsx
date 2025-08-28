@@ -115,7 +115,7 @@ export default  function FeaturedProducts() {
                   <p className="font-semibold text-sm leading-tight line-clamp-2  capitalize">
                     {product.name}
                   </p>
-                  <h3 className="text-sm text-muted leading-tight line-clamp-2 truncate">
+                  <h3 className="text-sm text-muted-foreground leading-tight line-clamp-2 truncate">
                     {product.description}
                   </h3>
                   

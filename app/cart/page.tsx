@@ -53,7 +53,7 @@ const {items,updateQuantity,removeItem,getItemCount,getShipping,getSubtotal,getT
                           alt={item.name}
                           width={100}
                           height={100}
-                          className="rounded-lg"
+                          className="rounded"
                         />
                         {item.stock === 0 && <Badge className="absolute -top-2 -right-2 bg-red-600">Out of Stock</Badge>}
                       </div>
@@ -139,7 +139,7 @@ const {items,updateQuantity,removeItem,getItemCount,getShipping,getSubtotal,getT
 
                   <Link href="/checkout">
                     <Button
-                      className="w-full bg-blue-600 hover:bg-blue-700"
+                      className="w-full"
                       size="lg"
                       disabled={getItemCount() === 0 || items.some((item) => item.stock === 0)}
                     >

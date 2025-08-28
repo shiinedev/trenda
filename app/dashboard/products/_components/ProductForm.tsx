@@ -40,7 +40,7 @@ import { ProductsWithRelations } from "@/app/types/prisma";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { Category } from "@prisma/client";
+import {Category} from "@prisma/client"
 
 type UploadFile = {
   id: string;
