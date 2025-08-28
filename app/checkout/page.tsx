@@ -11,54 +11,60 @@ import { Truck, Shield, ArrowLeft } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useCartStore } from "../stores/useCart"
+import {useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { OrderInput, orderSchema } from "../lib/zodSchema"
+import { FormField, FormItem, FormLabel, FormMessage, Form, FormControl } from "@/components/ui/form"
+import { toast } from "sonner"
+import { useMutation } from "@tanstack/react-query"
+import { api } from "../lib/apiClient"
 
 export default function CheckoutPage() {
 
   const [shippingMethod, setShippingMethod] = useState("standard")
-  const [orderStatus, setOrderStatus] = useState<"idle" | "processing" | "success" | "error">("idle")
 
-  const {items,getSubtotal,getShipping,getTax,getTotal} = useCartStore()
+  const {items,getSubtotal,getShipping,getTax,getTotal} = useCartStore();
 
-  const orderItems = [
-    {
-      id: 1,
-      name: "Premium Wireless Headphones",
-      price: 299,
-      quantity: 1,
-      image: "/placeholder.svg?height=80&width=80",
-    },
-    {
-      id: 2,
-      name: "Smart Fitness Tracker",
-      price: 199,
-      quantity: 2,
-      image: "/placeholder.svg?height=80&width=80",
-    },
-  ]
-
-  const subtotal = orderItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
-  const shipping = shippingMethod === "express" ? 15 : 0
-  const tax = subtotal * 0.08
-  const total = subtotal + shipping + tax
-
-  const handleCompleteOrder = async () => {
-    setOrderStatus("processing")
-
-    // Simulate order processing
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 2000))
-      setOrderStatus("success")
-
-      // Redirect to success page after a moment
-      setTimeout(() => {
-        window.location.href = "/order-success"
-      }, 1500)
-    } catch (error) {
-        console.log(error);
-        
-      setOrderStatus("error")
+  const form = useForm<OrderInput>({
+    resolver:zodResolver(orderSchema),
+    defaultValues:{
+      name:"",
+      email:"",
+      phone:"",
+      address:"",
+      postalCode:""
     }
+  })
+
+  const createOrder = useMutation({
+    mutationFn:async (data:OrderInput) =>{
+      const res = await api.post("/order",data);
+      return res.data
+    },
+    onSuccess:()=>{
+      toast.success("order completed successfully");
+    },
+    onError:(err) =>{
+      console.log("order error",err);
+      toast.error("order is not completed!")
+    }
+  })
+  
+  const {isSubmitting,isSubmitSuccessful} = form.formState
+
+  const onSubmit = async (data:OrderInput) =>{
+    console.log(data);
+    if(items.length === 0){
+      toast.warning("No items to order please Back to products an select")
+      return
+    }
+
+    await createOrder.mutate(data)
+
+    
   }
+
+   
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -70,8 +76,10 @@ export default function CheckoutPage() {
           </Link>
           <h1 className="text-3xl font-bold text-slate-900">Checkout</h1>
         </div>
-
-        <div className="grid lg:grid-cols-3 gap-8">
+        
+   
+        <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="grid lg:grid-cols-3 gap-8">
           {/* Checkout Form */}
           <div className="lg:col-span-2 space-y-6">
             {/* Shipping Information */}
@@ -82,31 +90,82 @@ export default function CheckoutPage() {
                   Shipping Information
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="firstName">Full Name</Label>
-                    <Input id="firstName" placeholder="full name" />
+              <CardContent >
+       
+                <div  className="space-y-4">
+                  <div className="grid grid-clos-1 md:grid-cols-2 gap-2">
+                  <FormField
+                  name="name"
+                  control={form.control}
+                  render={({field}) =>(
+                    <FormItem>
+                      <FormLabel>Fullname</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="enter your fullname" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                   />
+                    <FormField
+                  name="phone"
+                  control={form.control}
+                  render={({field}) =>(
+                    <FormItem>
+                      <FormLabel>Phone</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="enter your phone" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                   />
+
                   </div>
-                  <div>
-                  <Label htmlFor="phone">Phone</Label>
-                  <Input id="phone" type="phone" placeholder="enter your phone" />
+                  <FormField
+                  name="email"
+                  control={form.control}
+                  render={({field}) =>(
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="example@gmail.com" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                   />
+                   <div className="grid grid-clos-1 md:grid-cols-2 gap-2">
+                  <FormField
+                  name="address"
+                  control={form.control}
+                  render={({field}) =>(
+                    <FormItem>
+                      <FormLabel>Address</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Address" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                   />
+                    <FormField
+                  name="postalCode"
+                  control={form.control}
+                  render={({field}) =>(
+                    <FormItem>
+                      <FormLabel>Postal Code</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Postal code" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                   />
+
                   </div>
                 </div>
-                <div>
-                <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" placeholder="john@example.com" />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                  <Label htmlFor="address">Address</Label>
-                  <Input id="address" placeholder="123 Main Street" />
-                  </div>
-                  <div>
-                    <Label htmlFor="zip">Postal Code</Label>
-                    <Input id="zip" placeholder="10001" />
-                  </div>
-                </div>
+                
               </CardContent>
             </Card>
 
@@ -195,15 +254,15 @@ export default function CheckoutPage() {
                 <Button
                   className="w-full"
                   size="lg"
-                  onClick={handleCompleteOrder}
-                  disabled={orderStatus === "processing"}
+                  type="submit"
+                  disabled={isSubmitting}
                 >
-                  {orderStatus === "processing" ? (
+                  {isSubmitting ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                       Processing Order...
                     </>
-                  ) : orderStatus === "success" ? (
+                  ) : isSubmitSuccessful ? (
                     "Order Placed Successfully!"
                   ) : (
                     "Complete Order"
@@ -217,8 +276,9 @@ export default function CheckoutPage() {
               </CardContent>
             </Card>
           </div>
+          </form>
+          </Form>
         </div>
-      </div>
     </div>
   )
 }

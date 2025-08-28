@@ -21,5 +21,15 @@ export type FormData = z.infer<typeof productSchema>
 export const categorySchema = z.object({
   name:z.string().min(1,"category name is required")
 })
-
 export type categoryInput = z.infer<typeof categorySchema>
+
+export const orderSchema = z.object({
+  name:z.string().min(1,"fullname is required"),
+  email:z.email("invalid email"),
+  phone:z.string().min(8,"phone is not valid").max(20,"phone is not valid"),
+  postalCode:z.string().min(1,"postal code is required"),
+  address:z.string().min(3,"address is required")
+
+})
+
+export type OrderInput = z.infer<typeof orderSchema>
