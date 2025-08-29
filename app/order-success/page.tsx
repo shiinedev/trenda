@@ -7,7 +7,8 @@ import { Badge } from "@/components/ui/badge"
 import { CheckCircle, Package, Truck, Download, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { useCartStore } from "../stores/useCart"
+import { useCartStore } from "../hooks/useCart.ts"
+
 
 export default function OrderSuccessPage() {
   const [orderNumber] = useState(`ORD-${Math.random().toString(36).substr(2, 9).toUpperCase()}`)
@@ -163,20 +164,6 @@ export default function OrderSuccessPage() {
               </CardContent>
             </Card>
 
-          
-
-            {/* Support */}
-            {/* <Card>
-              <CardContent className="p-6">
-                <h3 className="font-semibold text-slate-900 mb-4">Need Help?</h3>
-                <div className="space-y-3 text-sm">
-                  <p className="text-slate-600">Questions about your order? Our AI assistant is here to help 24/7.</p>
-                  <Button variant="outline" className="w-full bg-transparent">
-                    Chat with AI Support
-                  </Button>
-                </div>
-              </CardContent>
-            </Card> */}
           </div>
         </div>
       </div>

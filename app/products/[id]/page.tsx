@@ -21,9 +21,9 @@ import { useParams, useRouter } from "next/navigation"
 import { useQuery } from "@tanstack/react-query"
 import { api } from "@/app/lib/apiClient"
 import { Navigation } from "@/components/layout/Navigation"
-import { useCartStore } from "@/app/stores/useCart"
 import { ProductsWithRelations } from "@/app/types/prisma"
 import { getAverageRating } from "@/app/lib/getAverageRating"
+import { useCartStore } from "@/app/hooks/useCart"
 
 
 export default function ProductDetailPage() {
@@ -185,14 +185,6 @@ export default function ProductDetailPage() {
                             {/* Price */}
                             <div className="flex items-center space-x-4">
                                 <span className="text-3xl font-bold text-slate-900">${product.price}</span>
-                                {/* {product.originalPrice && (
-                <span className="text-xl text-slate-500 line-through">${product.originalPrice}</span>
-              )}
-              {product.originalPrice && (
-                <Badge variant="secondary" className="bg-green-100 text-green-800">
-                  Save ${product.originalPrice - product.price}
-                </Badge>
-              )} */}
                             </div>
 
 
@@ -216,7 +208,7 @@ export default function ProductDetailPage() {
                                             size="sm"
                                             onClick={() => setQuantity(quantity + 1)}
                                             className="h-10 w-10"
-                                            disabled={product.stock == 0}
+                                            disabled={quantity > product.stock}
                                         >
                                             <Plus className="h-4 w-4" />
                                         </Button>
@@ -224,9 +216,9 @@ export default function ProductDetailPage() {
                                 </div>
 
                                 <div className="flex space-x-4">
-                                    <Button size="lg" className="flex-1 bg-blue-600 hover:bg-blue-700" onClick={handleAddCart} disabled={product.stock == 0}>
+                                    <Button size="lg" className="flex-1 bg-blue-600 hover:bg-blue-700" onClick={handleAddCart} disabled={product.stock == 0 || quantity > product.stock}>
                                         <ShoppingCart className="h-5 w-5 mr-2" />
-                                        {product.stock > 0 ? "Add to Cart" : "Out of Stock"}
+                                        {product.stock >= 0 || quantity > product.stock ? "Add to Cart" : "Out of Stock"}
                                     </Button>
                                     <Button
                                         size="lg"

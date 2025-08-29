@@ -13,7 +13,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { toast } from "sonner"
 import { redirect } from "next/navigation"
 import { Skeleton } from "../ui/skeleton"
-import { useCartStore } from "@/app/stores/useCart"
+import { useCartStore } from "@/app/hooks/useCart"
 
 export function Navigation() {
   const [isSearchFocused, setIsSearchFocused] = useState(false)

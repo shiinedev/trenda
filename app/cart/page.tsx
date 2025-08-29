@@ -6,17 +6,18 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
-import { Trash2, Plus, Minus, ShoppingBag, ArrowRight } from "lucide-react"
+import { Trash2, ShoppingBag, ArrowRight } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { Navigation } from "@/components/layout/Navigation"
-import { useCartStore } from "../stores/useCart"
 import { useRouter } from "next/navigation"
+import { QuantitySelector } from "@/components/QuantitySelector"
+import { useCartStore } from "../hooks/useCart"
 
 
 export default function CartPage() {
  
-const {items,updateQuantity,removeItem,getItemCount,getShipping,getSubtotal,getTax,getTotal,} = useCartStore();
+const {items,removeItem,getItemCount,getShipping,getSubtotal,getTax,getTotal,} = useCartStore();
 
   const [promoCode, setPromoCode] = useState("")
   const router = useRouter()
@@ -68,27 +69,7 @@ const {items,updateQuantity,removeItem,getItemCount,getShipping,getSubtotal,getT
                       </div>
 
                       <div className="flex items-center space-x-3">
-                        <div className="flex items-center border border-slate-300 rounded-lg">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                            className="h-8 w-8"
-                            disabled={item?.stock == 1}
-                          >
-                            <Minus className="h-4 w-4" />
-                          </Button>
-                          <span className="px-3 py-1 text-center min-w-[2rem]">{item.quantity}</span>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                            className="h-8 w-8"
-                            
-                          >
-                            <Plus className="h-4 w-4" />
-                          </Button>
-                        </div>
+                        <QuantitySelector item={item} />
 
                         <Button
                           variant="ghost"

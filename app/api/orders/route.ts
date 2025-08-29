@@ -30,35 +30,59 @@ export async function POST(req: NextRequest) {
 
   const { address, email, name, phone, postalCode, status } = parsed.data;
   try {
-    const order = await prisma.order.create({
-      data: {
-        fullname: name,
-        address,
-        email,
-        phone,
-        postalCode,
-        status,
-        userId: body.userId,
-        items: {
-          create: body.items.map(
-            (
-              item:{name: string,
-                price: number,
-                quantity: number,
-                productId: string}
-            ) => ({
-              name:item.name,
-              price:item.price,
-              quantity:item.quantity,
-              productId:item.productId,
-            })
-          ),
+
+
+    const order = await prisma.$transaction(async (tx) =>{
+      // create order
+      const newOrder = await tx.order.create({
+        data: {
+          fullname: name,
+          address,
+          email,
+          phone,
+          postalCode,
+          status,
+          userId: body.userId,
+          items: {
+            create: body.items.map(
+              (
+                item:{name: string,
+                  price: number,
+                  quantity: number,
+                  productId: string}
+              ) => ({
+                name:item.name,
+                price:item.price,
+                quantity:item.quantity,
+                productId:item.productId,
+              })
+            ),
+          },
         },
-      },
-      include:{
-        items:true
+        include:{
+          items:true
+        }
+      });
+
+      // update product quantity
+
+      for(const item of body.items){
+         await tx.product.update({
+          where:{
+            id:item.productId
+          },
+          data:{
+            stock:{
+              decrement:item.quantity
+            }
+          }
+        })
       }
-    });
+
+      return newOrder
+
+    })
+   
 
     return NextResponse.json(order, {
       status: 201,
@@ -71,3 +95,4 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
