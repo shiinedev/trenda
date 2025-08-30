@@ -27,11 +27,11 @@ const Reviews = ({ id }: { id: string }) => {
 
   if (isPending) return <h1>loading...</h1>
 
-    const reviews  = data?.reviews
-    const ratingSummary  = data?.ratingSummary
+  const reviews = data?.reviews
+  const ratingSummary = data?.ratingSummary
 
   return (
-    <div className="space-y-6 space-x-4">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Review Summary Card */}
       <Card>
         <CardContent className="p-6">
@@ -49,8 +49,8 @@ const Reviews = ({ id }: { id: string }) => {
                   <Star
                     key={i}
                     className={`h-4 w-4 ${i < Math.round(getAverageRating(reviews))
-                        ? "fill-yellow-400 text-yellow-400"
-                        : "text-slate-300"
+                      ? "fill-yellow-400 text-yellow-400"
+                      : "text-slate-300"
                       }`}
                   />
                 ))}
@@ -58,23 +58,23 @@ const Reviews = ({ id }: { id: string }) => {
               <div className="text-sm text-slate-600 mt-1">{reviews?.length} reviews</div>
             </div>
             <div className="flex-1">
-            {[5, 4, 3, 2, 1].map((rating) => {
-          const count = ratingSummary[rating] || 0;
-          const percentage = reviews?.length ? (count / reviews?.length) * 100 : 0;
+              {[5, 4, 3, 2, 1].map((rating) => {
+                const count = ratingSummary[rating] || 0;
+                const percentage = reviews?.length ? (count / reviews?.length) * 100 : 0;
 
-          return (
-            <div key={rating} className="flex items-center space-x-2 mb-1">
-              <span className="text-sm text-slate-600 w-8">{rating}★</span>
-              <div className="flex-1 bg-slate-200 rounded-full h-2">
-                <div
-                  className="bg-yellow-400 h-2 rounded-full"
-                  style={{ width: `${percentage}%` }}
-                ></div>
-              </div>
-              <span className="text-sm text-slate-600 w-8">{count}</span>
-            </div>
-          );
-        })}
+                return (
+                  <div key={rating} className="flex items-center space-x-2 mb-1">
+                    <span className="text-sm text-slate-600 w-8">{rating}★</span>
+                    <div className="flex-1 bg-slate-200 rounded-full h-2">
+                      <div
+                        className="bg-yellow-400 h-2 rounded-full"
+                        style={{ width: `${percentage}%` }}
+                      ></div>
+                    </div>
+                    <span className="text-sm text-slate-600 w-8">{count}</span>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -85,7 +85,15 @@ const Reviews = ({ id }: { id: string }) => {
                 <div className="flex items-center space-x-2">
                   <Avatar className="cursor-pointer">
                     <AvatarImage src={review?.user?.image ?? undefined} />
-                    <AvatarFallback><User2 /></AvatarFallback>
+                    <AvatarFallback>
+                      {review?.user?.name
+                        ? review.user.name
+                          .split(" ") 
+                          .map(n => n[0]) 
+                          .join("") 
+                          .toUpperCase()
+                        : <User2 />}
+                    </AvatarFallback>
                   </Avatar>
 
                   <div className="flex-1">
