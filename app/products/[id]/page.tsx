@@ -24,6 +24,7 @@ import { Navigation } from "@/components/layout/Navigation"
 import { ProductsWithRelations } from "@/app/types/prisma"
 import { getAverageRating } from "@/app/lib/getAverageRating"
 import { useCartStore } from "@/app/hooks/useCart"
+import Reviews from "../_components/Reviews"
 
 
 export default function ProductDetailPage() {
@@ -266,7 +267,9 @@ export default function ProductDetailPage() {
 
 
                 </div>
+                <Reviews id={product.id} />
             </main>
+           
         </>
     )
 }

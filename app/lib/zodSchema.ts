@@ -33,3 +33,11 @@ export const orderSchema = z.object({
 })
 
 export type OrderInput = z.infer<typeof orderSchema>
+
+
+export const reviewSchema = z.object({
+  rating:z.number().min(1,"please choose rate").max(5,"max rate is 4"),
+  comment:z.string().optional()
+})
+
+export type reviewInput = z.infer<typeof reviewSchema>

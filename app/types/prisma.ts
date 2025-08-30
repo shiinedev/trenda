@@ -7,3 +7,11 @@ export type ProductsWithRelations = Prisma.ProductGetPayload<{
         category:true
     }
 }>
+
+
+export type ReviewWithRelations = Prisma.ReviewGetPayload<{
+    include:{
+        product:true,
+        user:true
+    }
+}>
