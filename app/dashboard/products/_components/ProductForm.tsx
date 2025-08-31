@@ -74,7 +74,6 @@ export default function ProductForm({
     },
   });
 
-  const { isSubmitting } = form.formState;
 
   const { startUpload, routeConfig, isUploading } = useUploadThing(
     "imageUploader",
@@ -521,14 +520,13 @@ export default function ProductForm({
                 <Button
                   type="submit"
                   className="flex-1"
-                  disabled={isSubmitting || isUploading}>
-                  {isSubmitting
-                    ? product
-                      ? isUploading && "updating..."
-                      : isUploading && "Creating..."
-                    : product
-                    ? "Update Product"
-                    : "Create new Product"}
+                  disabled={createProduct.isPending || isUploading || updateProduct.isPending}>
+                  {
+                    product ? 
+                    updateProduct.isPending || isUploading ? "Updating..." : "Update Product"
+                    :
+                    createProduct.isPaused || isUploading ? "Creating..." : "Create Product"
+                  }
                 </Button>
                 <Button type="button" variant={"outline"} onClick={handelClear}>
                   cancel
