@@ -13,8 +13,6 @@ import { getAverageRating } from '@/app/lib/getAverageRating'
 
 const Reviews = ({ id }: { id: string }) => {
 
-
-
   const { data, isPending } = useQuery({
     queryKey: ["reviews"],
     queryFn: async () => {

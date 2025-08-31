@@ -143,7 +143,7 @@ export default function ProductDetailPage() {
                                             }`}
                                     >
                                         <Image
-                                            src={image.url || "/placeholder.svg"}
+                                            src={image.url ?? undefined}
                                             alt={`${product.name} view ${index + 1}`}
                                             width={120}
                                             height={120}
@@ -173,9 +173,9 @@ export default function ProductDetailPage() {
                                                     }`}
                                             />
                                         ))}
-                                        <span className="text-slate-600 ml-2">{getAverageRating(product.reviews)}</span>
+                                        <span className="text-slate-600 ml-2">{getAverageRating(product.reviews).toFixed(1)}</span>
                                     </div>
-                                    <span className="text-slate-500">({getAverageRating(product.reviews)})</span>
+                                    <span className="text-slate-500">({product.reviews.length} reviews)</span>
                                     <span className="text-slate-500">•</span>
                                     <span className={`font-medium ${product.stock > 0 ? "text-green-600" : "text-red-600"}`}>
                                         {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
@@ -263,11 +263,8 @@ export default function ProductDetailPage() {
                             </div>
                         </div>
                     </div>
-
-
-
                 </div>
-                <Reviews id={product.id} />
+                <Reviews id={productId} />
             </main>
            
         </>

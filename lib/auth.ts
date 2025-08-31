@@ -26,11 +26,17 @@ export const auth = betterAuth({
       accessType: "offline",
     },
   },
-  plugins: [nextCookies()],
+  session: {
+    cookieCache: {
+      enabled: true,
+      maxAge: 5 * 60,
+    },
+  },
   advanced:{
     database:{
       generateId:false
     }
    
-  }
+  },
+  plugins: [nextCookies()],
 });
