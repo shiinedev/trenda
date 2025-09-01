@@ -3,7 +3,7 @@ import { Sparkles, Facebook, Twitter, Instagram, Youtube } from 'lucide-react';
 
 export function Footer() {
   return (
-    <footer className="bg-muted/30 border-t ">
+    <footer className="bg-background/80 border-t ">
       <div className="max-w-6xl  mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
@@ -39,34 +39,34 @@ export function Footer() {
 
           {/* Shop */}
           <div className="space-y-4">
-            <h3 className="font-semibold">Shop</h3>
+            <h3 className="font-semibold text-foreground">Shop</h3>
             <ul className="space-y-2 text-sm">
               <li><Link href="/products" className="text-muted-foreground hover:text-foreground">All Products</Link></li>
               <li><Link href="/categories" className="text-muted-foreground hover:text-foreground">Categories</Link></li>
-              <li><Link href="/deals" className="text-muted-foreground hover:text-foreground">Deals</Link></li>
-              <li><Link href="/new-arrivals" className="text-muted-foreground hover:text-foreground">New Arrivals</Link></li>
+              <li><Link href="/" className="text-muted-foreground hover:text-foreground">Deals</Link></li>
+              <li><Link href="/" className="text-muted-foreground hover:text-foreground">New Arrivals</Link></li>
             </ul>
           </div>
 
           {/* Support */}
           <div className="space-y-4">
-            <h3 className="font-semibold">Support</h3>
+            <h3 className="font-semibold text-foreground">Support</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/help" className="text-muted-foreground hover:text-foreground">Help Center</Link></li>
-              <li><Link href="/contact" className="text-muted-foreground hover:text-foreground">Contact Us</Link></li>
-              <li><Link href="/shipping" className="text-muted-foreground hover:text-foreground">Shipping Info</Link></li>
-              <li><Link href="/returns" className="text-muted-foreground hover:text-foreground">Returns</Link></li>
+              <li><Link href="/" className="text-muted-foreground hover:text-foreground">Help Center</Link></li>
+              <li><Link href="/" className="text-muted-foreground hover:text-foreground">Contact Us</Link></li>
+              <li><Link href="/" className="text-muted-foreground hover:text-foreground">Shipping Info</Link></li>
+              <li><Link href="/" className="text-muted-foreground hover:text-foreground">Returns</Link></li>
             </ul>
           </div>
 
           {/* Company */}
           <div className="space-y-4">
-            <h3 className="font-semibold">Company</h3>
+            <h3 className="font-semibold text-foreground">Company</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/about" className="text-muted-foreground hover:text-foreground">About Us</Link></li>
-              <li><Link href="/careers" className="text-muted-foreground hover:text-foreground">Careers</Link></li>
-              <li><Link href="/privacy" className="text-muted-foreground hover:text-foreground">Privacy Policy</Link></li>
-              <li><Link href="/terms" className="text-muted-foreground hover:text-foreground">Terms of Service</Link></li>
+              <li><Link href="/" className="text-muted-foreground hover:text-foreground">About Us</Link></li>
+              <li><Link href="/" className="text-muted-foreground hover:text-foreground">Careers</Link></li>
+              <li><Link href="/" className="text-muted-foreground hover:text-foreground">Privacy Policy</Link></li>
+              <li><Link href="/" className="text-muted-foreground hover:text-foreground">Terms of Service</Link></li>
             </ul>
           </div>
         </div>

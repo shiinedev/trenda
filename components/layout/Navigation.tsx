@@ -11,6 +11,7 @@ import { toast } from "sonner"
 import { redirect, usePathname } from "next/navigation"
 import { Skeleton } from "../ui/skeleton"
 import { useCartStore } from "@/app/hooks/useCart"
+import ToggleTheme from "../ToggleTheme"
 
 export function Navigation() {
   const {items} = useCartStore()
@@ -38,7 +39,7 @@ export function Navigation() {
 
 
   return (
-    <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+    <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-slate-200">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -53,23 +54,22 @@ export function Navigation() {
 
           {/* Desktop Search */}
           <div className="hidden md:flex items-center space-x-4">
-          <Link href="/" className={`text-md font-medium ${pathname == "/" ? "text-purple-600" :"text-foreground"} text-foreground hover:text-purple-600 transition-colors`}>
+          <Link href="/" className={`text-md font-medium ${pathname == "/" ? "text-purple-600" :"text-foreground"}  hover:text-purple-600 transition-colors`}>
               Home
             </Link>
-          <Link href="/products" className={`text-md font-medium ${pathname == "/products" ? "text-purple-600" :"text-foreground"} text-foreground hover:text-purple-600 transition-colors`}>
+          <Link href="/products" className={`text-md font-medium ${pathname == "/products" ? "text-purple-600" :"text-foreground"}  hover:text-purple-600 transition-colors`}>
               Products
             </Link>
-            <Link href="/categories" className={`text-md font-medium ${pathname == "/categories" ? "text-purple-600" :"text-foreground"} text-foreground hover:text-purple-600 transition-colors`}>
-              Categories
-            </Link>
+    
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-4">
+            <ToggleTheme />
            
             <Link href="/cart">
               <Button variant="ghost" size="sm" className="relative">
-                <ShoppingCart className="h-5 w-5" />
+                <ShoppingCart className="h-5 w-5 text-foreground" />
                 <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center bg-blue-600">
                   {items.length}
                 </Badge>

@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+
 import { Card } from '@/components/ui/card';
 import { Smartphone, Shirt, Home, Gamepad2, BookOpen, Dumbbell } from 'lucide-react';
 import Image from 'next/image';
@@ -61,7 +61,7 @@ export default function CategorySection() {
     <section className="py-16 bg-background">
       <div className="max-w-6xl mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="text-3xl text-foreground md:text-4xl font-bold mb-4">
             Shop by Category
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
@@ -73,7 +73,7 @@ export default function CategorySection() {
           {categories.map((category) => {
             const IconComponent = category.icon;
             return (
-              <Link key={category.id} href={`/categories/${category.id}`}>
+              <div key={category.id}>
                 <Card className="group p-0 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer overflow-hidden">
                   <div className="aspect-square relative">
                     <Image
@@ -92,7 +92,7 @@ export default function CategorySection() {
                     </div>
                   </div>
                 </Card>
-              </Link>
+              </div>
             );
           })}
         </div>
