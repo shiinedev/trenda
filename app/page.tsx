@@ -3,9 +3,17 @@ import CategorySection from "@/components/home/CategorySection"
 import HeroSection from "@/components/home/HeroSection"
 import FeaturedProducts from "@/components/home/FeaturedProducts"
 import { Navigation } from "@/components/layout/Navigation"
+import prisma from "@/lib/prisma"
 
-export default  function HomePage() {
+export default async function HomePage() {
 
+  const products = await prisma.product.findMany({
+    include:{
+       category:true,
+       images:true,
+       reviews:true
+    }
+  })
 
   return (
     <div className="min-h-screen">
@@ -15,7 +23,7 @@ export default  function HomePage() {
       <HeroSection />
 
       {/* Featured Products */}
-    <FeaturedProducts  />
+    <FeaturedProducts products={products}  />
 
       {/* Categories */}
      <CategorySection />

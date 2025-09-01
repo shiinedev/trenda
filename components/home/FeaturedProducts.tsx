@@ -1,28 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {Heart, ShoppingCart, Sparkles, Star } from 'lucide-react';
 import Image from 'next/image';
-import { useQuery } from '@tanstack/react-query';
-import { api } from '@/app/lib/apiClient';
 import Link from 'next/link';
 import { ProductsWithRelations } from '@/app/types/prisma';
 import { getAverageRating } from '@/app/lib/getAverageRating';
+import { ProductGridSkeleton } from '../skeletons/ProductSkeleton';
 
 
-export default  function FeaturedProducts() {
+export default  function FeaturedProducts({products}:{products:ProductsWithRelations[]}) {
   const [wishlist, setWishlist] = useState<string[]>([]);
 
-  
-  const { data, isLoading } = useQuery({
-    queryKey: ["products"],
-    queryFn: () => api.get("/products"),
-    retry: 1,
-  })
-  
   const toggleWishlist = (productId: string) => {
     setWishlist(prev => 
       prev.includes(productId) 
@@ -31,13 +23,7 @@ export default  function FeaturedProducts() {
     );
   };
 
-  if (isLoading) return <p>loading.....</p>
-
- const products:ProductsWithRelations[] = data?.data ?? []
-  console.log(products);
-
-  
-  
+    
 
   return (
     <section className="py-16 bg-muted/30">
@@ -55,13 +41,13 @@ export default  function FeaturedProducts() {
             <Link href="/products">View All</Link>
           </Button>
         </div>
-
+        <Suspense fallback={<ProductGridSkeleton />}>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {
            
-           products?.length > 0 &&
+           products.length > 0 &&
           
-          products?.map((product:ProductsWithRelations) => (
+          products.slice(0,3).map((product:ProductsWithRelations) => (
             <Link key={product.id} href={`/products/${product.id}`}>
                <Card  className="group p-0 hover:shadow-xl transition-all duration-300 overflow-hidden">
               <div className="relative aspect-square overflow-hidden h-60">
@@ -140,12 +126,7 @@ export default  function FeaturedProducts() {
 
                   {/* Price */}
                   <div className="flex items-center space-x-2">
-                    <span className="font-bold text-lg">${product.price}</span>
-                    {product.price > product.price && (
-                      <span className="text-sm text-muted-foreground line-through">
-                        ${product.price}
-                      </span>
-                    )}
+                    <span className="font-bold text-lg">${product.price.toLocaleString("en-Us",{minimumFractionDigits:2,maximumFractionDigits:2})}</span>
                   </div>
                 </div>
               </CardContent>
@@ -154,6 +135,7 @@ export default  function FeaturedProducts() {
            
           ))}
         </div>
+        </Suspense>
       </div>
     </section>
   );

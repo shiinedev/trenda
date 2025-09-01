@@ -9,11 +9,10 @@ import { ReviewWithRelations } from '@/app/types/prisma'
 import { formatDistanceToNow } from 'date-fns'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { getAverageRating } from '@/app/lib/getAverageRating'
+import { ReviewsSkeleton } from '@/components/skeletons/ReviewSkeleton'
 
 
 const Reviews = ({ id }: { id: string }) => {
-
-
 
   const { data, isPending } = useQuery({
     queryKey: ["reviews"],
@@ -25,10 +24,10 @@ const Reviews = ({ id }: { id: string }) => {
   })
 
 
-  if (isPending) return <h1>loading...</h1>
 
-  const reviews = data?.reviews
-  const ratingSummary = data?.ratingSummary
+
+  const reviews:ReviewWithRelations[] = data?.reviews ?? []
+  const ratingSummary = data?.ratingSummary ?? 0
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -80,7 +79,12 @@ const Reviews = ({ id }: { id: string }) => {
 
           {/* Individual Reviews */}
           <div className="space-y-6">
-            {data.reviews.map((review: ReviewWithRelations) => (
+
+            {
+              isPending ?
+              <ReviewsSkeleton />
+              :
+            reviews.slice(0,3).map((review: ReviewWithRelations) => (
               <div key={review.id} className="border-b border-slate-200 pb-4">
                 <div className="flex items-center space-x-2">
                   <Avatar className="cursor-pointer">
