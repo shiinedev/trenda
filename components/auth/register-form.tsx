@@ -90,7 +90,7 @@ export function RegisterForm({
   const handleGoogleLogin = async () => {
     await signIn.social({
       provider: "google",
-      callbackURL: "/",
+      callbackURL: "/products",
       
     })
   }

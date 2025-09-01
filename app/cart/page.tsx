@@ -1,10 +1,8 @@
 "use client"
 
-import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { Trash2, ShoppingBag, ArrowRight } from "lucide-react"
 import Image from "next/image"
@@ -19,7 +17,6 @@ export default function CartPage() {
  
 const {items,removeItem,getItemCount,getShipping,getSubtotal,getTax,getTotal,} = useCartStore();
 
-  const [promoCode, setPromoCode] = useState("")
   const router = useRouter()
 
  
@@ -64,7 +61,7 @@ const {items,removeItem,getItemCount,getShipping,getSubtotal,getTax,getTotal,} =
 
                       <div className="flex-1 space-y-2">
                         <h3 className="font-semibold text-slate-900">{item.name}</h3>
-                        <p className="text-lg font-bold text-slate-900">${item.price}</p>
+                        <p className="text-lg font-bold text-slate-900">${item.price.toLocaleString("en-Us",{minimumFractionDigits:2,maximumFractionDigits:2})}</p>
                         {item.stock === 0 && <p className="text-sm text-red-600">This item is currently out of stock</p>}
                       </div>
 
@@ -98,30 +95,25 @@ const {items,removeItem,getItemCount,getShipping,getSubtotal,getTax,getTotal,} =
                 <div className="space-y-3">
                   <div className="flex justify-between">
                     <span className="text-slate-600">Subtotal</span>
-                    <span className="font-medium">${getSubtotal().toFixed(2)}</span>
+                    <span className="font-medium">${getSubtotal().toLocaleString("en-Us",{minimumFractionDigits:2,maximumFractionDigits:2})}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-600">Shipping</span>
-                    <span className="font-medium">{getShipping() === 0 ? "Free" : `$${getShipping().toFixed(2)}`}</span>
+                    <span className="font-medium">{getShipping() === 0 ? "Free" : `$${getShipping().toLocaleString("en-Us",{minimumFractionDigits:2,maximumFractionDigits:2})}`}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-600">Tax</span>
-                    <span className="font-medium">${getTax().toFixed(2)}</span>
+                    <span className="font-medium">${getTax().toLocaleString("en-Us",{minimumFractionDigits:2,maximumFractionDigits:2})}</span>
                   </div>
                   <Separator />
                   <div className="flex justify-between text-lg font-bold">
                     <span>Total</span>
-                    <span>${getTotal().toFixed(2)}</span>
+                    <span>${getTotal().toLocaleString("en-Us",{minimumFractionDigits:2,maximumFractionDigits:2})}</span>
                   </div>
                 </div>
 
                 <div className="mt-6 space-y-4">
-                  <div className="flex space-x-2">
-                    <Input placeholder="Promo code" value={promoCode} onChange={(e) => setPromoCode(e.target.value)} />
-                    <Button variant="outline" disabled={promoCode === ""}>Apply</Button>
-                  </div>
-
-              
+                 
                     <Button
                       className="w-full"
                       size="lg"

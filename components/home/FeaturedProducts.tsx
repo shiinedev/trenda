@@ -30,11 +30,11 @@ export default  function FeaturedProducts({products}:{products:ProductsWithRelat
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center justify-between mb-12">
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Trended Products
+            <h2 className="text-3xl md:text-4xl font-bold ">
+              Featured <span className='text-purple-500 border-b-2 border-purple-500'>Products</span> 
             </h2>
-            <p className="text-muted-foreground text-lg">
-              our trended products
+            <p className="text-muted-foreground text-lg mt-2">
+              Our Featured products
             </p>
           </div>
           <Button asChild>

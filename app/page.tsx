@@ -8,6 +8,9 @@ import prisma from "@/lib/prisma"
 export default async function HomePage() {
 
   const products = await prisma.product.findMany({
+    where:{
+      isFeatured:true
+    },
     include:{
        category:true,
        images:true,

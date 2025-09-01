@@ -17,6 +17,7 @@ import GridCard from "./GridCard";
 import ListCard from "./ListCard";
 import { Filter, Grid, List } from "lucide-react";
 import { ProductGridSkeleton, ProductListSkeleton } from "@/components/skeletons/ProductSkeleton";
+import { IconShoppingCartFilled } from "@tabler/icons-react";
 
 type productsListProps ={
     products:ProductsWithRelations[],
@@ -38,6 +39,12 @@ export default function ProductsList({products,categories}:productsListProps) {
       selectedCategories.includes(product.category.id);
     return inPriceRange && inCategory;
   });
+
+  const handleClearFilter = () =>{
+    setPriceRange([0,2000]);
+    setSelectedCategories([])
+
+  }
 
 
   return (
@@ -178,6 +185,19 @@ export default function ProductsList({products,categories}:productsListProps) {
                 ))}
               </div>
               </Suspense>
+
+              {filteredProducts.length === 0 && (
+          <div className="text-center py-12">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <IconShoppingCartFilled className="h-8 w-8 text-slate-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">No Products found in this {selectedCategories}</h3>
+            <p className="text-slate-600 mb-4">Try adjusting your selected terms</p>
+            <Button variant="outline" onClick={handleClearFilter}>
+              Clear Filter
+            </Button>
+          </div>
+        )}
             </div>
           </div>
         </div>
