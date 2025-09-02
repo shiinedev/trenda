@@ -49,14 +49,14 @@ export default function ProductsList({products,categories}:productsListProps) {
 
   return (
     <>
-      <main className="min-h-screen bg-slate-50">
+      <main className="min-h-screen ">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-slate-900 mb-2">
+            <h1 className="text-3xl font-bold text-foreground mb-2">
               All Products
             </h1>
-            <p className="text-slate-600">
+            <p className="text-muted-foreground">
               Discover amazing products 
             </p>
           </div>
@@ -66,7 +66,7 @@ export default function ProductsList({products,categories}:productsListProps) {
             <div className="lg:w-64 space-y-6">
               <Card>
                 <CardContent className="p-6">
-                  <h3 className="font-semibold text-slate-900 mb-4 flex items-center">
+                  <h3 className="font-semibold text-foreground mb-4 flex items-center">
                     <Filter className="h-4 w-4 mr-2" />
                     Filters
                   </h3>
@@ -74,7 +74,7 @@ export default function ProductsList({products,categories}:productsListProps) {
                   {/* Price Range */}
                   <div className="space-y-4">
                     <div>
-                      <label className="text-sm font-medium text-slate-700 mb-2 block">
+                      <label className="text-sm font-medium text-foreground mb-2 block">
                         Price Range: ${priceRange[0]} - ${priceRange[1]}
                       </label>
                       <Slider
@@ -88,7 +88,7 @@ export default function ProductsList({products,categories}:productsListProps) {
 
                     {/* Categories */}
                     <div>
-                      <label className="text-sm font-medium text-slate-700 mb-2 block">
+                      <label className="text-sm font-medium text-foreground mb-2 block">
                         Categories
                       </label>
                       <div className="space-y-2">
@@ -116,7 +116,7 @@ export default function ProductsList({products,categories}:productsListProps) {
                             />
                             <label
                               htmlFor={category.id}
-                              className="text-sm text-slate-600">
+                              className="text-sm text-muted-foreground">
                               {category.name}
                             </label>
                           </div>
@@ -133,7 +133,7 @@ export default function ProductsList({products,categories}:productsListProps) {
               {/* Toolbar */}
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center space-x-4">
-                  <span className="text-sm text-slate-600">
+                  <span className="text-sm text-muted-foreground">
                     {filteredProducts.length} products found
                   </span>
                   <Select defaultValue="relevance">
@@ -191,8 +191,8 @@ export default function ProductsList({products,categories}:productsListProps) {
             <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
               <IconShoppingCartFilled className="h-8 w-8 text-slate-400" />
             </div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-2">No Products found in this {selectedCategories}</h3>
-            <p className="text-slate-600 mb-4">Try adjusting your selected terms</p>
+            <h3 className="text-lg font-semibold text-foreground mb-2">No Products found {selectedCategories.length > 0 && `in this ${selectedCategories}`}</h3>
+            <p className="text-muted-foreground mb-4">Try adjusting your selected filters</p>
             <Button variant="outline" onClick={handleClearFilter}>
               Clear Filter
             </Button>

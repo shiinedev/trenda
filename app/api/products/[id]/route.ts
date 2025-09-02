@@ -3,6 +3,7 @@
 import { updateProductSchema } from "@/app/lib/zodSchema";
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { deleteProductWithRelations } from "@/app/lib/delete";
 
 
 
@@ -87,6 +88,7 @@ export async function PUT(
   }
 }
 
+
 export async function DELETE(
   _req: Request,
   { params }: { params: { id: string } }
@@ -97,19 +99,23 @@ export async function DELETE(
 
   try {
     const product = await prisma.product.findUnique({
-      where: { id },
+      where:{id}
     });
 
-    if (!product)
-      return NextResponse.json({ error: "product not found" }, { status: 404 });
+    if (!product) return NextResponse.json({ error: "product not found" }, { status: 404 });
 
-    await prisma.product.delete({ where: { id } });
+
+    await deleteProductWithRelations(id)
+
 
     return NextResponse.json(
-      { message: "product deleted successfully" },
+      { message: "Product deleted successfully" },
       { status: 200 }
     );
   } catch (error) {
+    console.error(error);
     return NextResponse.json({ error }, { status: 500 });
   }
 }
+
+

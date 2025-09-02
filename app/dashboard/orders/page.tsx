@@ -4,6 +4,7 @@ import React from 'react'
 import prisma from "@/lib/prisma";
 import { format } from "date-fns";
 import { OrderItem } from '@prisma/client';
+import { IconShoppingCartFilled } from '@tabler/icons-react';
 
 const OrdersPage = async () => {
 
@@ -60,8 +61,20 @@ const OrdersPage = async () => {
                             </div>
                         ))}
                     </div>
+                    {
+                        orders.length === 0 && (
+                            <div className="text-center py-12">
+                            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                              <IconShoppingCartFilled className="h-8 w-8 text-purple-600" />
+                            </div>
+                            <h3 className="text-lg font-semibold text-slate-900 mb-2">No Orders Found</h3>
+                          </div>
+                        )
+                    }
                 </CardContent>
             </Card>
+
+           
         </main>
     )
 }

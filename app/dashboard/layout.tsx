@@ -7,6 +7,7 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar"
+import { ThemeProvider } from "@/components/theme-provider"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -24,6 +25,12 @@ export default function DashboardLayout({
     <html lang="en" className="scroll-smooth">
       <body className={`${inter.className} bg-slate-50 text-slate-900`}>
         <main>
+        <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
         <SidebarProvider
       style={
         {
@@ -39,7 +46,7 @@ export default function DashboardLayout({
       </SidebarInset>
     </SidebarProvider>
            
-            
+    </ThemeProvider>
         </main>
       </body>
     </html>

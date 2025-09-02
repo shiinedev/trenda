@@ -31,7 +31,7 @@ export function ProductGridSkeleton() {
 export function ProductListSkeleton() {
   return (
     <div className="space-y-4">
-      {Array.from({ length: 5 }).map((_, i) => (
+      {Array.from({ length: 3 }).map((_, i) => (
         <Card key={i} className="group p-0 overflow-hidden rounded-xl shadow-sm">
           <div className="flex p-4 space-x-4">
             <Skeleton className="w-[100px] h-[100px] rounded-lg flex-shrink-0" />

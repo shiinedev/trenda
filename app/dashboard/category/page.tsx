@@ -17,6 +17,7 @@ import { toast } from "sonner"
 
 import { Category } from "@prisma/client";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
+import { ProductListSkeleton } from "@/components/skeletons/ProductSkeleton"
 
 
 export default function CategoryManager() {
@@ -32,7 +33,7 @@ export default function CategoryManager() {
     })
     const queryClient = useQueryClient()
 
-    const { data: categories } = useQuery({
+    const { data: categories,isLoading } = useQuery({
         queryKey: ["categories"],
         queryFn: async () => {
             const res = await api.get("/category");
@@ -89,7 +90,7 @@ export default function CategoryManager() {
         <main className="container mx-auto p-6">
             <div className="flex items-center justify-between mb-8">
                 <div>
-                    <h1 className="text-2xl font-bold">Category Manager</h1>
+                    <h1 className="text-2xl font-bold text-foreground">Category Manager</h1>
                     <p className="text-muted-foreground mt-2">Manage your categories</p>
                 </div>
 
@@ -142,18 +143,23 @@ export default function CategoryManager() {
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                         <Tag className="w-5 h-5" />
-                        Categories ({categories?.length})
+                        Categories ({categories?.length | 0})
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    {categories?.length === 0 ? (
+                    {
+                        isLoading ?
+                        <ProductListSkeleton />
+                        :
+                    categories?.length === 0 ? (
                         <div className="text-center py-8 text-muted-foreground">
                             <Tag className="w-12 h-12 mx-auto mb-4 opacity-50" />
                             <p>No categories yet. Add your first category to get started.</p>
                         </div>
                     ) : (
                         <div className="grid gap-3">
-                            {categories?.map((category: Category) => (
+                            {
+                            categories?.map((category: Category) => (
                                 <div
                                     key={category.id}
                                     className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors"
@@ -178,7 +184,7 @@ export default function CategoryManager() {
                                                 <AlertDialogHeader>
                                                     <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                                                     <AlertDialogDescription>
-                                                        This will permanently delete category &quot;{category.name}&quot;
+                                                        This category will permanently delete &quot;{category.name}&quot;
                                                         and remove your data from our servers.
                                                     </AlertDialogDescription>
                                                 </AlertDialogHeader>
