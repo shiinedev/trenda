@@ -28,22 +28,22 @@ const ListCard = ({product}:{product:ProductsWithRelations}) => {
             {product.stock === 0 && <Badge variant={"destructive"} className="absolute top-2 left-2 text-xs">out stock</Badge>}  
             </div>
             <CardContent className="flex-1 space-y-2">
-              <h3 className="font-semibold text-slate-900">{product.name}</h3>
-              <p className="text-sm text-slate-600">{product.description}</p>
+              <h3 className="font-semibold text-foreground">{product.name}</h3>
+              <p className="text-sm text-muted-foreground">{product.description}</p>
               <div className="flex items-center space-x-2">
                 <div className="flex items-center space-x-1">
                   <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                  <span className="text-sm text-slate-600">
+                  <span className="text-sm text-muted-foreground">
                     {getAverageRating(product.reviews).toFixed(1)}
                   </span>
                 </div>
-                <span className="text-sm text-slate-500">
+                <span className="text-sm text-muted-foreground">
                   ({product.reviews.length} reviews)
                 </span>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <span className="text-xl font-bold text-slate-900">
+                  <span className="text-xl font-bold text-foreground">
                   ${product.price.toLocaleString("en-Us",{minimumFractionDigits:2,maximumFractionDigits:2})}
                   </span>
                 </div>

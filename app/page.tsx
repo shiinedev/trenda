@@ -23,7 +23,7 @@ export default async function HomePage() {
        <Navigation />
       <main>
       {/* Hero Section */}
-      <HeroSection />
+      <HeroSection products={products} />
 
       {/* Featured Products */}
     <FeaturedProducts products={products}  />

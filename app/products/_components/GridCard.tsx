@@ -23,10 +23,10 @@ const GridCard = ({ product }: { product: ProductsWithRelations }) => {
         {product.stock === 0 && <Badge variant={"destructive"} className="absolute top-2 left-2 text-xs">out stock</Badge>}  
         </div>
         <CardContent className="pb-4">
-          <h3 className="font-semibold text-slate-900 line-clamp-2">
+          <h3 className="font-semibold text-foreground line-clamp-2">
             {product.name}
           </h3>
-          <p className="text-sm text-slate-600 truncate">
+          <p className="text-sm text-muted-foreground truncate">
             {product.description}
           </p>
           <div className="flex items-center space-x-2">
@@ -42,13 +42,13 @@ const GridCard = ({ product }: { product: ProductsWithRelations }) => {
                 />
               ))}
             </div>
-            <span className="text-sm text-slate-500">
+            <span className="text-sm text-muted-foreground">
               ({product.reviews.length} reviews)
             </span>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <span className="text-xl font-bold text-slate-900">
+              <span className="text-xl font-bold text-foreground">
                 ${product.price.toLocaleString("en-Us",{minimumFractionDigits:2,maximumFractionDigits:2})}
               </span>
             </div>
