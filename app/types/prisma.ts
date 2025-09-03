@@ -15,3 +15,13 @@ export type ReviewWithRelations = Prisma.ReviewGetPayload<{
         user:true
     }
 }>
+
+export type orderWithReviews = Prisma.OrderGetPayload<{
+    include:{
+        items:true,
+        user:true,
+        _count:true
+    }
+}>
+
+export type STATUS = "PENDING" | "PAID" | "SHIPPED" | "DELIVERED" | "CANCELLED";

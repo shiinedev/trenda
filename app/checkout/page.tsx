@@ -19,6 +19,7 @@ import { toast } from "sonner"
 import { useMutation } from "@tanstack/react-query"
 import { api } from "../lib/apiClient"
 import { useSession } from "@/lib/auth-client"
+import { useRouter } from "next/navigation"
 
 export default function CheckoutPage() {
 
@@ -27,6 +28,7 @@ export default function CheckoutPage() {
   const {data:session} = useSession()
 
   const {items,getSubtotal,getShipping,getTax,getTotal,clearCart} = useCartStore();
+  const router = useRouter()
 
   const form = useForm<OrderInput>({
     resolver:zodResolver(orderSchema),
@@ -47,8 +49,10 @@ export default function CheckoutPage() {
     },
     onSuccess:()=>{
       toast.success("order completed successfully");
+      router.push("/products")
       clearCart();
       form.reset()
+      
     },
     onError:(err) =>{
       console.log("order error",err);
