@@ -3,6 +3,7 @@ import { reviewInput, reviewSchema } from "@/app/lib/zodSchema"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Skeleton } from "@/components/ui/skeleton"
 import { Textarea } from "@/components/ui/textarea"
 import { useSession } from "@/lib/auth-client"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -58,7 +59,7 @@ const ReviewsForm = ({productId}:{productId:string}) => {
         createMutation.mutate(reviewData);
     }
 
-    if( isPending) return <h1>loading....</h1>
+    if(isDialogOpen && isPending) return <Skeleton className="h-4 w-5" />
 
     if(isDialogOpen && !session?.session){
         redirect("/login");

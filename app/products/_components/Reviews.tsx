@@ -23,9 +23,6 @@ const Reviews = ({ id }: { id: string }) => {
     retry: 1
   })
 
-
-
-
   const reviews:ReviewWithRelations[] = data?.reviews ?? []
   const ratingSummary = data?.ratingSummary ?? 0
 
@@ -40,9 +37,9 @@ const Reviews = ({ id }: { id: string }) => {
           </div>
 
           {/* Review Summary */}
-          <div className="flex items-center space-x-6 p-4 bg-slate-50 rounded-lg mb-6">
+          <div className="flex items-center space-x-6 p-4 bg-background rounded-lg mb-6">
             <div className="text-center">
-              <div className="text-3xl font-bold text-slate-900">{getAverageRating(reviews).toFixed(1)}</div>
+              <div className="text-3xl font-bold text-foreground">{getAverageRating(reviews).toFixed(1)}</div>
               <div className="flex items-center justify-center space-x-1 mt-1">
                 {[...Array(5)].map((_, i) => (
                   <Star
@@ -54,7 +51,7 @@ const Reviews = ({ id }: { id: string }) => {
                   />
                 ))}
               </div>
-              <div className="text-sm text-slate-600 mt-1">{reviews?.length} reviews</div>
+              <div className="text-sm text-muted-foreground mt-1">{reviews?.length} reviews</div>
             </div>
             <div className="flex-1">
               {[5, 4, 3, 2, 1].map((rating) => {
@@ -63,14 +60,14 @@ const Reviews = ({ id }: { id: string }) => {
 
                 return (
                   <div key={rating} className="flex items-center space-x-2 mb-1">
-                    <span className="text-sm text-slate-600 w-8">{rating}★</span>
+                    <span className="text-sm text-muted-foreground w-8">{rating}★</span>
                     <div className="flex-1 bg-slate-200 rounded-full h-2">
                       <div
                         className="bg-yellow-400 h-2 rounded-full"
                         style={{ width: `${percentage}%` }}
                       ></div>
                     </div>
-                    <span className="text-sm text-slate-600 w-8">{count}</span>
+                    <span className="text-sm text-muted-foreground w-8">{count}</span>
                   </div>
                 );
               })}
@@ -85,7 +82,7 @@ const Reviews = ({ id }: { id: string }) => {
               <ReviewsSkeleton />
               :
             reviews.slice(0,3).map((review: ReviewWithRelations) => (
-              <div key={review.id} className="border-b border-slate-200 pb-4">
+              <div key={review.id} className="border-b border p-4 rounded-md">
                 <div className="flex items-center space-x-2">
                   <Avatar className="cursor-pointer">
                     <AvatarImage src={review?.user?.image ?? undefined} />
@@ -102,7 +99,7 @@ const Reviews = ({ id }: { id: string }) => {
 
                   <div className="flex-1">
                     <div className="flex items-center space-x-2 mb-1">
-                      <span className="font-medium text-slate-900">{review.user.name}</span>
+                      <span className="font-medium text-foreground">{review.user.name}</span>
                     </div>
                     <div className="flex items-center space-x-2 mb-2">
                       <div className="flex items-center">
@@ -119,7 +116,7 @@ const Reviews = ({ id }: { id: string }) => {
 
 
                 </div>
-                <p className="text-slate-600 mb-3 leading-relaxed ml-4">&quot;{review.comment}&quot;</p>
+                <p className="text-muted-foreground mb-3 leading-relaxed ml-4">&quot;{review.comment}&quot;</p>
               </div>
             ))}
           </div>

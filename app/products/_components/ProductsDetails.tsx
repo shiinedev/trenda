@@ -23,7 +23,7 @@ import { getAverageRating } from "@/app/lib/getAverageRating";
 import { useCartStore } from "@/app/hooks/useCart";
 import Reviews from "../_components/Reviews";
 
-export default function ProductDetail({
+export default function ProductDetails({
   product,
 }: {
   product: ProductsWithRelations;
@@ -51,16 +51,16 @@ export default function ProductDetail({
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-slate-900 mb-4">
+          <h1 className="text-2xl font-bold text-foreground mb-4">
             Product Not Found
           </h1>
-          <p className="text-slate-600 mb-6">
+          <p className="text-muted-foreground mb-6">
             The product you are looking for does not exist.
           </p>
           <Link href="/products">
-            <Button className="bg-blue-600 hover:bg-blue-700">
+            <Button>
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Products
             </Button>
@@ -71,30 +71,30 @@ export default function ProductDetail({
   }
 
   return (
-    <main className="min-h-screen bg-slate-50">
+    <main className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Breadcrumb */}
-        <nav className="flex items-center space-x-2 text-sm text-slate-600 mb-8">
-          <Link href="/" className="hover:text-slate-900">
+        <nav className="flex items-center space-x-2 text-sm text-muted-foreground mb-8">
+          <Link href="/" className="hover:text-foreground">
             Home
           </Link>
           <span>/</span>
-          <Link href="/products" className="hover:text-slate-900">
+          <Link href="/products" className="hover:text-foreground">
             Products
           </Link>
           <span>/</span>
-          <Link href={`/categories`} className="hover:text-slate-900">
+          <Link href={`/categories`} className="hover:text-foreground">
             {product.category.name}
           </Link>
           <span>/</span>
-          <span className="text-slate-900 font-medium">{product.name}</span>
+          <span className="text-foreground font-medium">{product.name}</span>
         </nav>
 
         <div className="grid lg:grid-cols-2 gap-12 mb-16">
           {/* Product Images */}
           <div className="space-y-4">
             {/* Main Image */}
-            <div className="relative overflow-hidden rounded-2xl bg-white border border-slate-200">
+            <div className="relative overflow-hidden rounded-2xl bg-card border">
               <Image
                 src={product.images?.[selectedImage].url ?? undefined}
                 alt={product.name}
@@ -105,7 +105,7 @@ export default function ProductDetail({
               />
 
               {product.stock === 0 && (
-                <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                <div className="absolute inset-0 bg-background/80 flex items-center justify-center">
                   <Badge variant="destructive" className="text-lg px-4 py-2">
                     Out of Stock
                   </Badge>
@@ -143,10 +143,10 @@ export default function ProductDetail({
                 {/* <Badge variant="outline">{product.brand}</Badge> */}
                 <Badge variant="outline">{product.category.name}</Badge>
               </div>
-              <h1 className="text-3xl font-bold text-slate-900 mb-2">
+              <h1 className="text-3xl font-bold text-foreground mb-2">
                 {product.name}
               </h1>
-              <p className="text-slate-600 mb-4">{product.description}</p>
+              <p className="text-muted-foreground mb-4">{product.description}</p>
 
               <div className="flex items-center space-x-4 mb-4">
                 <div className="flex items-center space-x-1">
@@ -160,14 +160,14 @@ export default function ProductDetail({
                       }`}
                     />
                   ))}
-                  <span className="text-slate-600 ml-2">
+                  <span className="text-muted-foreground ml-2">
                     {getAverageRating(product.reviews).toFixed(1)}
                   </span>
                 </div>
-                <span className="text-slate-500">
+                <span className="text-muted-foreground">
                   ({product.reviews.length} reviews)
                 </span>
-                <span className="text-slate-500">•</span>
+                <span className="text-muted-foreground">•</span>
                 <span
                   className={`font-medium ${
                     product.stock > 0 ? "text-green-600" : "text-red-600"
@@ -181,7 +181,7 @@ export default function ProductDetail({
 
             {/* Price */}
             <div className="flex items-center space-x-4">
-              <span className="text-3xl font-bold text-slate-900">
+              <span className="text-3xl font-bold text-purple-600">
                 ${product.price.toLocaleString("en-Us",{minimumFractionDigits:2,maximumFractionDigits:2})}
               </span>
             </div>
@@ -189,19 +189,19 @@ export default function ProductDetail({
             {/* Quantity and Actions */}
             <div className="space-y-4">
               <div className="flex items-center space-x-4">
-                <span className="text-sm font-medium text-slate-700">
+                <span className="text-sm font-medium text-foreground">
                   Quantity:
                 </span>
-                <div className="flex items-center border border-slate-300 rounded-lg">
+                <div className="flex items-center border border-muted-foreground rounded-lg">
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     className="h-10 w-10"
                     disabled={product.stock === 0}>
-                    <Minus className="h-4 w-4" />
+                    <Minus className="h-4 w-4 text-foreground" />
                   </Button>
-                  <span className="px-4 py-2 text-center min-w-[3rem]">
+                  <span className="px-4 py-2 text-center text-foreground min-w-[3rem]">
                     {quantity}
                   </span>
                   <Button
@@ -210,7 +210,7 @@ export default function ProductDetail({
                     onClick={() => setQuantity(quantity + 1)}
                     className="h-10 w-10"
                     disabled={quantity > product.stock}>
-                    <Plus className="h-4 w-4" />
+                    <Plus className="h-4 w-4 text-foreground" />
                   </Button>
                 </div>
               </div>
@@ -218,7 +218,7 @@ export default function ProductDetail({
               <div className="flex space-x-4">
                 <Button
                   size="lg"
-                  className="flex-1 bg-blue-600 hover:bg-blue-700"
+                  className="flex-1"
                   onClick={handleAddCart}
                   disabled={product.stock == 0 || quantity > product.stock}>
                   <ShoppingCart className="h-5 w-5 mr-2" />
@@ -230,33 +230,33 @@ export default function ProductDetail({
                   size="lg"
                   variant="outline"
                   onClick={() => setIsWishlist(!isWishlist)}
-                  className={isWishlist ? "text-red-600 border-red-600" : ""}>
+                  className={isWishlist ? "text-red-600 border-red-600" : "text-foreground"}>
                   <Heart
                     className={`h-5 w-5 ${isWishlist ? "fill-red-600" : ""}`}
                   />
                 </Button>
                 <Button size="lg" variant="outline">
-                  <Share2 className="h-5 w-5" />
+                  <Share2 className="h-5 w-5 text-foreground" />
                 </Button>
               </div>
             </div>
 
             {/* Shipping Info */}
-            <div className="space-y-3 p-4 bg-slate-100 rounded-lg">
+            <div className="space-y-3 p-4 bg-accent rounded-lg">
               <div className="flex items-center space-x-3">
                 <Truck className="h-5 w-5 text-green-600" />
                 <div>
-                  <p className="font-medium text-slate-900">
+                  <p className="font-medium text-foreground">
                     {product ? "Free Shipping" : "Shipping Available"}
                   </p>
-                  <p className="text-sm text-slate-600">2</p>
+                  <p className="text-sm text-muted-foreground">2</p>
                 </div>
               </div>
               <div className="flex items-center space-x-3">
                 <RotateCcw className="h-5 w-5 text-blue-600" />
                 <div>
-                  <p className="font-medium text-slate-900">30-Day Returns</p>
-                  <p className="text-sm text-slate-600">
+                  <p className="font-medium text-foreground">30-Day Returns</p>
+                  <p className="text-sm text-muted-foreground">
                     Free returns on all orders
                   </p>
                 </div>
@@ -264,8 +264,8 @@ export default function ProductDetail({
               <div className="flex items-center space-x-3">
                 <Shield className="h-5 w-5 text-purple-600" />
                 <div>
-                  <p className="font-medium text-slate-900">Warranty</p>
-                  <p className="text-sm text-slate-600">2 years</p>
+                  <p className="font-medium text-foreground">Warranty</p>
+                  <p className="text-sm text-muted-foreground">2 years</p>
                 </div>
               </div>
             </div>

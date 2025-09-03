@@ -28,10 +28,10 @@ export default function RootLayout({
 
         <Providers>
           <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
+           attribute="class"
+           defaultTheme="system"
+           enableSystem
+           disableTransitionOnChange
           >
         <main className="min-h-screen"> {children}</main>
         </ThemeProvider>

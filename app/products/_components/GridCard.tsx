@@ -23,7 +23,7 @@ const GridCard = ({ product }: { product: ProductsWithRelations }) => {
         {product.stock === 0 && <Badge variant={"destructive"} className="absolute top-2 left-2 text-xs">out stock</Badge>}  
         </div>
         <CardContent className="pb-4">
-          <h3 className="font-semibold text-foreground line-clamp-2">
+          <h3 className="font-semibold text-foreground truncate">
             {product.name}
           </h3>
           <p className="text-sm text-muted-foreground truncate">
