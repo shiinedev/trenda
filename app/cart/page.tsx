@@ -8,25 +8,33 @@ import { Trash2, ShoppingBag, ArrowRight } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { Navigation } from "@/components/layout/Navigation"
-import { useRouter } from "next/navigation"
+import { redirect, useRouter } from "next/navigation"
 import { QuantitySelector } from "@/components/QuantitySelector"
 import { useCartStore } from "../hooks/useCart"
+import { useSession } from "@/lib/auth-client"
 
 
 export default function CartPage() {
+
+  const {data:session, isPending} = useSession()
  
 const {items,removeItem,getItemCount,getShipping,getSubtotal,getTax,getTotal,} = useCartStore();
 
   const router = useRouter()
 
+
+  if(!session?.user && !isPending ) {
+    return redirect("/login")
+  }
+
  
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background">
         <Navigation />
       <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-slate-900 mb-2">Shopping Cart</h1>
-          <p className="text-slate-600">{items.length} items with {getItemCount()} quantity in your cart</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Shopping Cart</h1>
+          <p className="text-accent-foreground">{items.length} items with {getItemCount()} quantity in your cart</p>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
@@ -35,9 +43,9 @@ const {items,removeItem,getItemCount,getShipping,getSubtotal,getTax,getTotal,} =
             {items.length === 0 ? (
               <Card>
                 <CardContent className="p-12 text-center">
-                  <ShoppingBag className="h-16 w-16 text-slate-300 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-slate-900 mb-2">Your cart is empty</h3>
-                  <p className="text-slate-600 mb-6">Add some products to get started</p>
+                  <ShoppingBag className="h-16 w-16 text-accent-foreground mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-foreground mb-2">Your cart is empty</h3>
+                  <p className="text-foreground mb-6">Add some products to get started</p>
                   <Link href="/products">
                     <Button >Continue Shopping</Button>
                   </Link>
@@ -60,8 +68,8 @@ const {items,removeItem,getItemCount,getShipping,getSubtotal,getTax,getTotal,} =
                       </div>
 
                       <div className="flex-1 space-y-2">
-                        <h3 className="font-semibold text-slate-900">{item.name}</h3>
-                        <p className="text-lg font-bold text-slate-900">${item.price.toLocaleString("en-Us",{minimumFractionDigits:2,maximumFractionDigits:2})}</p>
+                        <h3 className="font-semibold text-foreground">{item.name}</h3>
+                        <p className="text-lg font-bold text-foreground">${item.price.toLocaleString("en-Us",{minimumFractionDigits:2,maximumFractionDigits:2})}</p>
                         {item.stock === 0 && <p className="text-sm text-red-600">This item is currently out of stock</p>}
                       </div>
 
@@ -90,19 +98,19 @@ const {items,removeItem,getItemCount,getShipping,getSubtotal,getTax,getTotal,} =
           <div className="space-y-6">
             <Card>
               <CardContent className="p-6">
-                <h3 className="font-semibold text-slate-900 mb-4">Order Summary</h3>
+                <h3 className="font-semibold text-foreground mb-4">Order Summary</h3>
 
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="text-slate-600">Subtotal</span>
+                    <span className="text-accent-foreground">Subtotal</span>
                     <span className="font-medium">${getSubtotal().toLocaleString("en-Us",{minimumFractionDigits:2,maximumFractionDigits:2})}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-600">Shipping</span>
+                    <span className="text-accent-foreground">Shipping</span>
                     <span className="font-medium">{getShipping() === 0 ? "Free" : `$${getShipping().toLocaleString("en-Us",{minimumFractionDigits:2,maximumFractionDigits:2})}`}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-600">Tax</span>
+                    <span className="text-accent-foreground">Tax</span>
                     <span className="font-medium">${getTax().toLocaleString("en-Us",{minimumFractionDigits:2,maximumFractionDigits:2})}</span>
                   </div>
                   <Separator />
@@ -125,7 +133,7 @@ const {items,removeItem,getItemCount,getShipping,getSubtotal,getTax,getTotal,} =
                     </Button>
                  
 
-                  <p className="text-xs text-slate-500 text-center">Free shipping on orders over $500</p>
+                  <p className="text-xs text-shadow-accent-foreground text-center">Free shipping on orders over $500</p>
                 </div>
               </CardContent>
             </Card>
@@ -144,8 +152,8 @@ const {items,removeItem,getItemCount,getShipping,getSubtotal,getTax,getTotal,} =
                     </svg>
                   </div>
                   <div>
-                    <p className="font-medium text-slate-900">Secure Checkout</p>
-                    <p className="text-sm text-slate-600">SSL encrypted & PCI compliant</p>
+                    <p className="font-medium text-foreground">Secure Checkout</p>
+                    <p className="text-sm text-accent-foreground">SSL encrypted & PCI compliant</p>
                   </div>
                 </div>
               </CardContent>

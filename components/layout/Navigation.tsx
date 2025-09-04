@@ -39,7 +39,7 @@ export function Navigation() {
 
 
   return (
-    <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-slate-200">
+    <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -102,9 +102,6 @@ export function Navigation() {
                     </div>
                   </div>
                  <DropdownMenuSeparator />
-                  {/* <DropdownMenuItem asChild>
-                     <Link href="/profile">Profile</Link> 
-                  </DropdownMenuItem> */}
                   <DropdownMenuItem asChild>
                     <Link href="/dashboard">Dashboard</Link>
                   </DropdownMenuItem>
@@ -123,7 +120,7 @@ export function Navigation() {
               :
               <div className="space-x-4">
                   <Link href="/login">
-                <Button variant="outline" >
+                <Button variant="outline"  >
                   <User className="h-4 w-4" />
                   Login
                 </Button>

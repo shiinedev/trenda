@@ -3,7 +3,6 @@
 import {
   IconDotsVertical,
   IconLogout,
-  IconUserCircle,
 } from "@tabler/icons-react"
 
 import {
@@ -14,7 +13,6 @@ import {
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -27,7 +25,6 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { User2 } from "lucide-react"
-import Link from "next/link"
 import { Button } from "./ui/button"
 
 type userProps = {
@@ -88,15 +85,6 @@ export function NavUser({
                 </div>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem asChild>
-
-                <Link href="/profile"> <IconUserCircle /> Profile</Link>
-
-              </DropdownMenuItem>
-
-            </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="hover:bg-destructive/90" asChild >
               <Button variant={"destructive"} className="w-full cursor-pointer ">

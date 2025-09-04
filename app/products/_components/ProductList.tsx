@@ -4,13 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Category } from "@prisma/client";
 import { ProductsWithRelations } from "@/app/types/prisma";
 import GridCard from "./GridCard";
@@ -49,7 +42,7 @@ export default function ProductsList({products,categories}:productsListProps) {
 
   return (
     <>
-      <main className="min-h-screen ">
+      <main className="min-h-screen bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header */}
           <div className="mb-8">
@@ -136,21 +129,6 @@ export default function ProductsList({products,categories}:productsListProps) {
                   <span className="text-sm text-muted-foreground">
                     {filteredProducts.length} products found
                   </span>
-                  <Select defaultValue="relevance">
-                    <SelectTrigger className="w-40">
-                      <SelectValue placeholder="Sort by" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="relevance">Relevance</SelectItem>
-                      <SelectItem value="price-low">
-                        Price: Low to High
-                      </SelectItem>
-                      <SelectItem value="price-high">
-                        Price: High to Low
-                      </SelectItem>
-                      <SelectItem value="rating">Rating</SelectItem>
-                    </SelectContent>
-                  </Select>
                 </div>
 
                 <div className="flex items-center space-x-2">
@@ -158,13 +136,13 @@ export default function ProductsList({products,categories}:productsListProps) {
                     variant={viewMode === "grid" ? "default" : "outline"}
                     size="sm"
                     onClick={() => setViewMode("grid")}>
-                    <Grid className="h-4 w-4" />
+                    <Grid className="h-4 w-4 text-foreground" />
                   </Button>
                   <Button
                     variant={viewMode === "list" ? "default" : "outline"}
                     size="sm"
                     onClick={() => setViewMode("list")}>
-                    <List className="h-4 w-4" />
+                    <List className="h-4 w-4 text-foreground" />
                   </Button>
                 </div>
               </div>
@@ -189,7 +167,7 @@ export default function ProductsList({products,categories}:productsListProps) {
               {filteredProducts.length === 0 && (
           <div className="text-center py-12">
             <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-              <IconShoppingCartFilled className="h-8 w-8 text-slate-400" />
+              <IconShoppingCartFilled className="h-8 w-8 text-muted-foreground" />
             </div>
             <h3 className="text-lg font-semibold text-foreground mb-2">No Products found {selectedCategories.length > 0 && `in this ${selectedCategories}`}</h3>
             <p className="text-muted-foreground mb-4">Try adjusting your selected filters</p>

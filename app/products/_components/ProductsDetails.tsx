@@ -23,6 +23,7 @@ import { getAverageRating } from "@/app/lib/getAverageRating";
 import { useCartStore } from "@/app/hooks/useCart";
 import Reviews from "../_components/Reviews";
 
+
 export default function ProductDetails({
   product,
 }: {
@@ -31,6 +32,7 @@ export default function ProductDetails({
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
   const [isWishlist, setIsWishlist] = useState(false);
+ 
 
   const { addItem } = useCartStore();
 
