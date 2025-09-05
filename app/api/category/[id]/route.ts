@@ -1,11 +1,17 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import type { NextRequest } from "next/server";
+
+// Define the context type for dynamic routes
+interface RouteContext {
+  params: { id: string };
+}
 
 export async function DELETE(
-  _req: Request,
-  { params }: { params: { id: string } }
+  _req: NextRequest,
+  context: RouteContext
 ) {
-  const { id } = params;
+  const { id } = context.params;
 
   if (!id) {
     return NextResponse.json({ error: "id not found" }, { status: 404 });
