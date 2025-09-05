@@ -56,7 +56,9 @@ const ProductsLits = () => {
   });
 
   const handleDelete = (id: string) => {
-    deleteMutation.mutateAsync(id);
+
+    toast.error("is not allowed to delete product for demo!")
+   // deleteMutation.mutateAsync(id);
   };
 
   return (
@@ -89,7 +91,7 @@ const ProductsLits = () => {
                   key={product.id}
                   className="flex flex-col space-y-2 md:flex-row md:items-center md:space-x-4 p-4 border rounded-lg">
                   <Image
-                    src={product.images?.[0].url ?? ""}
+                    src={product.images?.[0]?.url ?? undefined}
                     alt={product.name}
                     width={100}
                     height={100}
@@ -133,7 +135,7 @@ const ProductsLits = () => {
                     <AlertDialogTrigger asChild></AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
-                        <AlertDialogTitle>
+                        <AlertDialogTitle >
                           Are you absolutely sure?
                         </AlertDialogTitle>
                         <AlertDialogDescription>

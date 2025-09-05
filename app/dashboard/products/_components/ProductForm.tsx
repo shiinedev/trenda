@@ -330,7 +330,7 @@ export default function ProductForm({
                           {...field}
                           value={field.value}
                           onChange={(e) =>
-                            field.onChange(parseFloat(e.target.value) || 0)
+                            field.onChange(parseFloat(e.target.value))
                           }
                         />
                       </FormControl>

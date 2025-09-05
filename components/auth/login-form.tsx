@@ -57,19 +57,20 @@ export function LoginForm({
       fetchOptions: {
         onSuccess: () => {
           toast.success("user logged in  successfully");
-          redirect("/")
+          redirect("/products")
         },
-        onError: (ctx) => {
+        onError: (ctx:{ error: { message: string } }) => {
           console.log("error", ctx.error.message);
           toast.error("error logged in  user", {
             description: ctx.error.message
           })
-          form.reset()
         }
       }
 
 
     });
+
+    form.reset()
 
   }
 

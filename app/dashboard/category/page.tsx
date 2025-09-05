@@ -82,8 +82,8 @@ export default function CategoryManager() {
 
 
     const handleDelete = async (id: string) => {
-        
-        await deleteMutation.mutateAsync(id)
+        toast.error("is not allowed to  delete category for demo!")
+       // await deleteMutation.mutateAsync(id)
     }
 
     return (

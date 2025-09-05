@@ -1,10 +1,17 @@
 import { ChartAreaInteractive } from "@/components/chart-area-interactive";
 import { SectionCards } from "@/components/section-cards";
 import TopProducts from "@/components/TopProducts";
+import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 export default async function Page() {
- 
+  const session = await auth.api.getSession({ headers: await headers() });
+
+  if(session?.user.role !== "ADMIN"){
+    redirect("/products")
+  }
 
   const [overviewStats, salesDataRaw, topProductsRaw, totalProducts] =
     await Promise.all([
@@ -106,66 +113,65 @@ export default async function Page() {
         pipeline: [
           {
             $lookup: {
-              from: 'Order',
-              localField: 'orderId',
-              foreignField: '_id',
-              as: 'order'
-            }
+              from: "Order",
+              localField: "orderId",
+              foreignField: "_id",
+              as: "order",
+            },
           },
           {
             $match: {
-              'order.status': { $in: ['PAID', 'DELIVERED',"SHIPPED"] }
-            }
+              "order.status": { $in: ["PAID", "DELIVERED", "SHIPPED"] },
+            },
           },
           {
             $group: {
-              _id: '$productId',
-              name: { $first: '$name' },
-              totalQuantity: { $sum: '$quantity' },
-              totalRevenue: { $sum: { $multiply: ['$price', '$quantity'] } },
-              orderCount: { $sum: 1 }
-            }
+              _id: "$productId",
+              name: { $first: "$name" },
+              totalQuantity: { $sum: "$quantity" },
+              totalRevenue: { $sum: { $multiply: ["$price", "$quantity"] } },
+              orderCount: { $sum: 1 },
+            },
           },
           {
-            $sort: { totalQuantity: -1 }
+            $sort: { totalQuantity: -1 },
           },
           {
-            $limit: 5
-          },
-          {
-            $lookup: {
-              from: 'Product',
-              localField: '_id',
-              foreignField: '_id',
-              as: 'product'
-            }
+            $limit: 5,
           },
           {
             $lookup: {
-              from: 'ProductImage',
-              localField: '_id',
-              foreignField: 'productId',
-              as: 'images'
-            }
+              from: "Product",
+              localField: "_id",
+              foreignField: "_id",
+              as: "product",
+            },
+          },
+          {
+            $lookup: {
+              from: "ProductImage",
+              localField: "_id",
+              foreignField: "productId",
+              as: "images",
+            },
           },
           {
             $project: {
               _id: 0,
-              id: '$_id',
+              id: "$_id",
               name: 1,
-              quantitySold: '$totalQuantity',
-              revenue: { $round: ['$totalRevenue', 0] },
+              quantitySold: "$totalQuantity",
+              revenue: { $round: ["$totalRevenue", 0] },
               orderCount: 1,
-              price: { $arrayElemAt: ['$product.price', 0] },
-              image: { $arrayElemAt: ['$images.url', 0] }
-            }
-          }
-        ]
+              price: { $arrayElemAt: ["$product.price", 0] },
+              image: { $arrayElemAt: ["$images.url", 0] },
+            },
+          },
+        ],
       }),
 
       prisma.product.count(),
     ]);
-
 
   const overview = overviewStats as unknown as Array<{
     totalOrders: number;
@@ -182,12 +188,11 @@ export default async function Page() {
     id: string;
     image: string;
     name: string;
-    orderCount:1,
-    price:number,
-    quantitySold:number,
-    revenue:number
+    orderCount: 1;
+    price: number;
+    quantitySold: number;
+    revenue: number;
   }>;
-  
 
   const data = {
     totalProducts,
@@ -195,10 +200,6 @@ export default async function Page() {
     totalRevenue: Math.round(overview[0]?.totalRevenue ?? 0),
     averageOrderValue: Math.round(overview[0]?.averageOrderValue ?? 0),
   };
-
-  console.log(topSells);
-  
-
 
   return (
     <div className="@container/main flex flex-1 flex-col gap-2">
@@ -214,7 +215,3 @@ export default async function Page() {
     </div>
   );
 }
-
-
-
-

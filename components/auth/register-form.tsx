@@ -27,10 +27,6 @@ import { signIn, signUp } from "@/lib/auth-client"
 import { toast } from "sonner"
 import { Loader2 } from "lucide-react"
 
-// const Role = {
-//   Admin:"admin",
-//   user:"user"
-// }
 
 const registerSchema = z.object({
   name: z.string().min(1, "name is required"),
@@ -75,7 +71,7 @@ export function RegisterForm({
           toast.success("user created successfully");
           router.push("/login")
         },
-        onError: (ctx) => {
+        onError: (ctx:{ error: { message: string } }) => {
           console.log("error", ctx.error.message);
           toast.error("error register user", {
             description: ctx.error.message

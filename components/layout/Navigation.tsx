@@ -1,42 +1,55 @@
-"use client"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { ShoppingCart, User, Menu, Sparkles, User2, LogOut } from "lucide-react"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { signOut, useSession } from "@/lib/auth-client"
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu"
-import { toast } from "sonner"
-import { redirect, usePathname } from "next/navigation"
-import { Skeleton } from "../ui/skeleton"
-import { useCartStore } from "@/app/hooks/useCart"
-import ToggleTheme from "../ToggleTheme"
+"use client";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  ShoppingCart,
+  User,
+  Menu,
+  Sparkles,
+  User2,
+  LogOut,
+} from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { signOut, useSession } from "@/lib/auth-client";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { toast } from "sonner";
+import { redirect, usePathname } from "next/navigation";
+import { Skeleton } from "../ui/skeleton";
+import { useCartStore } from "@/app/hooks/useCart";
+import ToggleTheme from "../ToggleTheme";
 
 export function Navigation() {
-  const {items} = useCartStore()
+  const { items } = useCartStore();
 
   const pathname = usePathname();
 
-  const { data: session , isPending } = useSession();
+  const { data: session, isPending } = useSession();
+  console.log(session);
 
-  const handleLogout = async () =>{
+  const handleLogout = async () => {
     await signOut({
       fetchOptions: {
         onSuccess: () => {
           toast.success("user logout");
-          redirect("/login")
+          redirect("/login");
         },
-        onError: (ctx) => {
+        onError: (ctx: { error: { message: string } }) => {
           console.log("error", ctx.error.message);
           toast.error("error logout in  user", {
-            description: ctx.error.message
-          })
-        }
-      }
-    })
-  }
-
+            description: ctx.error.message,
+          });
+        },
+      },
+    });
+  };
 
   return (
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b">
@@ -54,19 +67,26 @@ export function Navigation() {
 
           {/* Desktop Search */}
           <div className="hidden md:flex items-center space-x-4">
-          <Link href="/" className={`text-md font-medium ${pathname == "/" ? "text-purple-600" :"text-foreground"}  hover:text-purple-600 transition-colors`}>
+            <Link
+              href="/"
+              className={`text-md font-medium ${
+                pathname == "/" ? "text-purple-600" : "text-foreground"
+              }  hover:text-purple-600 transition-colors`}>
               Home
             </Link>
-          <Link href="/products" className={`text-md font-medium ${pathname == "/products" ? "text-purple-600" :"text-foreground"}  hover:text-purple-600 transition-colors`}>
+            <Link
+              href="/products"
+              className={`text-md font-medium ${
+                pathname == "/products" ? "text-purple-600" : "text-foreground"
+              }  hover:text-purple-600 transition-colors`}>
               Products
             </Link>
-    
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-4">
             <ToggleTheme />
-           
+
             <Link href="/cart">
               <Button variant="ghost" size="sm" className="relative">
                 <ShoppingCart className="h-5 w-5 text-foreground" />
@@ -75,69 +95,73 @@ export function Navigation() {
                 </Badge>
               </Button>
             </Link>
-            {
-              isPending 
-              ?
+            {isPending ? (
               <Skeleton className="h-10 w-10 rounded-full" />
-            :
-            session?.user ? (
+            ) : session?.user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Avatar className="cursor-pointer">
                     <AvatarImage src={session.user.image ?? undefined} />
-                    <AvatarFallback><User2 /></AvatarFallback>
+                    <AvatarFallback>
+                      <User2 />
+                    </AvatarFallback>
                   </Avatar>
-                </DropdownMenuTrigger >
+                </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56">
-                <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                  <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                     <Avatar className="h-8 w-8 rounded-lg">
-                      {session.user?.image && <AvatarImage src={session.user?.image} alt={session.user?.name} />}
-                      <AvatarFallback className="rounded-lg"><User2 /></AvatarFallback>
+                      {session.user?.image && (
+                        <AvatarImage
+                          src={session.user?.image}
+                          alt={session.user?.name}
+                        />
+                      )}
+                      <AvatarFallback className="rounded-lg">
+                        <User2 />
+                      </AvatarFallback>
                     </Avatar>
                     <div className="grid flex-1 text-left text-sm leading-tight">
-                      <span className="truncate font-medium">{session.user?.name}</span>
+                      <span className="truncate font-medium">
+                        {session.user?.name}
+                      </span>
                       <span className="text-muted-foreground truncate text-xs">
                         {session.user?.email}
                       </span>
                     </div>
                   </div>
-                 <DropdownMenuSeparator />
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link href="/dashboard">Dashboard</Link>
+                  {session?.user.role == "ADMIN" &&(
+                     <Link href="/dashboard">Dashboard</Link>
+                  )}
+                   
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <Button variant={"destructive"}
-                     onClick={handleLogout}
-                     className="w-full cursor-pointer"
-                     >
-                    Logout
+                    <Button
+                      variant={"destructive"}
+                      onClick={handleLogout}
+                      className="w-full cursor-pointer">
+                      Logout
                     </Button>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-
-            )
-              :
+            ) : (
               <div className="space-x-4">
-                  <Link href="/login">
-                <Button variant="outline"  >
-                  <User className="h-4 w-4" />
-                  Login
-                </Button>
-               
-              </Link>
-              <Link href="/login">
-                <Button  >
-                  <User className="h-4 w-4" />
-                  Get Start
-                </Button>
-               
-              </Link>
+                <Link href="/login">
+                  <Button variant="outline">
+                    <User className="h-4 w-4" />
+                    Login
+                  </Button>
+                </Link>
+                <Link href="/login">
+                  <Button>
+                    <User className="h-4 w-4" />
+                    Get Start
+                  </Button>
+                </Link>
               </div>
-            
-              
-              }
-
+            )}
           </div>
 
           {/* Mobile Menu */}
@@ -160,91 +184,93 @@ export function Navigation() {
                     </span>
                   </Link>
                 </div>
-                {
-                  session?.user && (
-                    <div className="space-y-2 border-b pb-2 ">
+                {session?.user && (
+                  <div className="space-y-2 border-b pb-2 ">
                     <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                    <Avatar className="h-8 w-8 rounded-lg">
-                      {session.user?.image && <AvatarImage src={session.user?.image} alt={session.user?.name} />}
-                      <AvatarFallback className="rounded-lg"><User2 /></AvatarFallback>
-                    </Avatar>
-                    <div className="grid flex-1 text-left text-sm leading-tight">
-                      <span className="truncate font-medium">{session.user?.name}</span>
-                      <span className="text-muted-foreground truncate text-xs">
-                        {session.user?.email}
-                      </span>
+                      <Avatar className="h-8 w-8 rounded-lg">
+                        {session.user?.image && (
+                          <AvatarImage
+                            src={session.user?.image}
+                            alt={session.user?.name}
+                          />
+                        )}
+                        <AvatarFallback className="rounded-lg">
+                          <User2 />
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="grid flex-1 text-left text-sm leading-tight">
+                        <span className="truncate font-medium">
+                          {session.user?.name}
+                        </span>
+                        <span className="text-muted-foreground truncate text-xs">
+                          {session.user?.email}
+                        </span>
+                      </div>
                     </div>
+                    {session?.user.role == "ADMIN" && (
+                      <Link href="/dashboard">
+                        <Button className="w-full">Go to Dashboard</Button>
+                      </Link>
+                    )}
                   </div>
-                  <Link href="/dashboard">
-                  <Button className="w-full">
-                    Go to Dashboard
-                  </Button>
-                  </Link>
-                  </div>
-                  )
-                }
+                )}
                 {/* Mobile Navigation Links */}
                 <div className="px-4">
-                <Link
+                  <Link
                     href="/"
-                    className="flex items-center text-lg font-medium text-foreground hover:text-purple-600 transition-colors py-3 border-b border-accent"
-                  >
+                    className="flex items-center text-lg font-medium text-foreground hover:text-purple-600 transition-colors py-3 border-b border-accent">
                     Home
                   </Link>
                   <Link
                     href="/products"
-                    className="flex items-center text-lg font-medium text-foreground hover:text-purple-600 transition-colors py-3 border-b border-accent"
-                  >
+                    className="flex items-center text-lg font-medium text-foreground hover:text-purple-600 transition-colors py-3 border-b border-accent">
                     Products
                   </Link>
                   <Link
                     href="/categories"
-                    className="flex items-center text-lg font-medium text-foreground hover:text-purple-600 transition-colors py-3 border-b border-accent"
-                  >
+                    className="flex items-center text-lg font-medium text-foreground hover:text-purple-600 transition-colors py-3 border-b border-accent">
                     Categories
                   </Link>
                   <Link
                     href="/cart"
-                    className="flex items-center justify-between text-lg font-medium text-foreground hover:text-purple-600 transition-colors py-3 border-b border-slate-100"
-                  >
+                    className="flex items-center justify-between text-lg font-medium text-foreground hover:text-purple-600 transition-colors py-3 border-b border-slate-100">
                     <span>Shopping Cart</span>
-                    <Badge >3</Badge>
+                    <Badge>3</Badge>
                   </Link>
                 </div>
 
                 {/* Mobile Footer */}
-                {
-                  session?.user ?
-                 
-                    <Button variant={"destructive"} onClick={handleLogout} className="w-full h-10 rounded-xl">
-                      <LogOut className="h-4 w-4 mr-2" />
-                      Logout
-                    </Button>
-                  :
-                  <div className="p-2 border-t flex flex-col space-y-4">
-                  <Link href="/auth/login">
-                    <Button variant={"outline"} className="w-full h-12 rounded-xl">
-                      <User className="h-4 w-4 mr-2" />
-                      Login
-                    </Button>
-                  </Link>
-                  <Link href="/auth/register">
-                    <Button className="w-full h-12 rounded-xl">
-                      <User className="h-4 w-4 mr-2" />
-                      Get Start
-                    </Button>
-                  </Link>
-                </div>
-                }
-                
+                {session?.user ? (
+                  <Button
+                    variant={"destructive"}
+                    onClick={handleLogout}
+                    className="w-full h-10 rounded-xl">
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Logout
+                  </Button>
+                ) : (
+                  <div className="p-2 flex flex-col space-y-4">
+                    <Link href="/login">
+                      <Button
+                        variant={"outline"}
+                        className="w-full h-12 rounded-xl">
+                        <User className="h-4 w-4 mr-2" />
+                        Login
+                      </Button>
+                    </Link>
+                    <Link href="/auth/register">
+                      <Button className="w-full h-12 rounded-xl">
+                        <User className="h-4 w-4 mr-2" />
+                        Get Start
+                      </Button>
+                    </Link>
+                  </div>
+                )}
               </div>
             </SheetContent>
           </Sheet>
         </div>
       </div>
     </nav>
-  )
+  );
 }
-
-
-
