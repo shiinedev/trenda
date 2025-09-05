@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🛍️ Trenda – Fullstack E-Commerce Platform  
 
-## Getting Started
+Trenda is a modern fullstack e-commerce web application built with **Next.js 15**, **Prisma + MongoDB**, **Better Auth**, and **shadcn/ui**.  
+It provides a seamless shopping experience for customers and a powerful admin dashboard for managing products, orders, and users.  
 
-First, run the development server:
+---
+
+## 🚀 Features  
+
+### 👤 Authentication  
+- Secure authentication with **Better Auth** 
+- **Google Login** via OAuth 2.0  
+- Role-based access (Admin & User) with **middleware protection**  
+- Session cookies with extended payload (role included for edge-safe checks)  
+
+### 🛒 User Features  
+- Browse products by categories  
+- Grid/List product view toggle  
+- Product reviews with rating summary  
+- Add to cart and checkout flow  
+- Order history  
+
+### 🧑‍💻 Admin Features  
+- Admin dashboard with role-based access control  
+- Manage products (CRUD with images & categories)  
+- Upload product images via **UploadThing** 
+- Manage orders and update status  
+- Sales analytics with charts (monthly sales, revenue, orders)  
+
+### 🎨 UI/UX  
+- Built with **shadcn/ui** components & Tailwind CSS  
+- Skeleton loaders for smooth UX  
+- Review and product card layouts (grid & list view)  
+
+---
+
+## 🛠️ Tech Stack  
+
+- **Frontend:** [Next.js 15 (App Router)](https://nextjs.org/) + React + TailwindCSS  
+- **UI Library:** [shadcn/ui](https://ui.shadcn.com/)  
+- **Database:** MongoDB (via [Prisma ORM](https://www.prisma.io/))  
+**Auth:** [Better Auth](https://better-auth.com/) with **Google OAuth** & session cookies  
+- **Image Uploads:** [UploadThing](https://uploadthing.com/) for product image storage  
+- **Deployment:** Vercel  
+
+---
+
+## 📦 Installation  
+
+Clone the repo and install dependencies:  
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/shiinedev/trenda.git
+cd trenda
+npm install  
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Setup environment variables in **.env**:
+```bash
+DATABASE_URL="mongodb+srv://..."
+BETTER_AUTH_SECRET="your-secret"
+BETTER_AUTH_URL="http://localhost:3000",
+GOOGLE_CLIENT_ID="your-google-clientId"
+GOOGLE_CLIENT_SECRET="your-google-secret"
+UPLOADTHING_TOKEN="your=uploadthing-token"
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📜 License
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT License © 2025 shiinedev
