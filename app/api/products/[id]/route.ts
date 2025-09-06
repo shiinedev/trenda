@@ -5,17 +5,12 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { deleteProductWithRelations } from "@/app/lib/delete";
 
-
-
 export async function GET(
   _req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-
-
-  const {id} =  await params;
-  if (!id)
-    return NextResponse.json({ error: "id not found" }, { status: 404 });
+  const { id } = await params;
+  if (!id) return NextResponse.json({ error: "id not found" }, { status: 404 });
 
   try {
     const product = await prisma.product.findUnique({
@@ -38,10 +33,10 @@ export async function GET(
 
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  if (!params.id)
-    return NextResponse.json({ error: "id not found" }, { status: 404 });
+  const { id } = await params;
+  if (!id) return NextResponse.json({ error: "id not found" }, { status: 404 });
 
   try {
     const data = await req.json();
@@ -57,14 +52,14 @@ export async function PUT(
       validate.data;
 
     const product = await prisma.product.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!product)
       return NextResponse.json({ error: "product not found" }, { status: 404 });
 
     const updatedProduct = await prisma.product.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         name,
         description,
@@ -88,25 +83,23 @@ export async function PUT(
   }
 }
 
-
 export async function DELETE(
   _req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
+  const { id } = await params;
 
   if (!id) return NextResponse.json({ error: "id not found" }, { status: 404 });
 
   try {
     const product = await prisma.product.findUnique({
-      where:{id}
+      where: { id },
     });
 
-    if (!product) return NextResponse.json({ error: "product not found" }, { status: 404 });
+    if (!product)
+      return NextResponse.json({ error: "product not found" }, { status: 404 });
 
-
-    await deleteProductWithRelations(id)
-
+    await deleteProductWithRelations(id);
 
     return NextResponse.json(
       { message: "Product deleted successfully" },
@@ -117,5 +110,3 @@ export async function DELETE(
     return NextResponse.json({ error }, { status: 500 });
   }
 }
-
-

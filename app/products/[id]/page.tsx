@@ -3,23 +3,26 @@ import { Navigation } from "@/components/layout/Navigation";
 import prisma from "@/lib/prisma";
 import ProductDetail from "../_components/ProductsDetails";
 
-export default async function ProductDetailPage({params}:{params:{id:string}}) {
-    
-    const {id} =  params;
+export default async function ProductDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
 
-    const product:ProductsWithRelations = await prisma.product.findFirstOrThrow({
-        where:{id},
-        include:{
-            images:true,
-            category:true,
-            reviews:true
-        }
-    })
+  const product: ProductsWithRelations = await prisma.product.findFirstOrThrow({
+    where: { id },
+    include: {
+      images: true,
+      category: true,
+      reviews: true,
+    },
+  });
 
-    return (
-        <>
-            <Navigation />
-           <ProductDetail product={product} />
-        </>
-    )
+  return (
+    <>
+      <Navigation />
+      <ProductDetail product={product} />
+    </>
+  );
 }
