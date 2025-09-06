@@ -35,6 +35,7 @@ export function Navigation() {
   console.log(session);
 
   const handleLogout = async () => {
+    
     await signOut({
       fetchOptions: {
         onSuccess: () => {
@@ -46,8 +47,13 @@ export function Navigation() {
           toast.error("error logout in  user", {
             description: ctx.error.message,
           });
+          if (ctx.error.message.includes("403") || ctx.error.message.includes("Forbidden")) {
+            sessionStorage.clear();
+            redirect("/login");
+          }
         },
       },
+
     });
   };
 
@@ -187,14 +193,14 @@ export function Navigation() {
                 {session?.user && (
                   <div className="space-y-2 border-b pb-2 ">
                     <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                      <Avatar className="h-8 w-8 rounded-lg">
+                      <Avatar className="h-8 w-8 rounded-lg text-foreground">
                         {session.user?.image && (
                           <AvatarImage
                             src={session.user?.image}
                             alt={session.user?.name}
                           />
                         )}
-                        <AvatarFallback className="rounded-lg">
+                        <AvatarFallback className="rounded-lg text-foreground">
                           <User2 />
                         </AvatarFallback>
                       </Avatar>
@@ -233,7 +239,7 @@ export function Navigation() {
                   </Link>
                   <Link
                     href="/cart"
-                    className="flex items-center justify-between text-lg font-medium text-foreground hover:text-purple-600 transition-colors py-3 border-b border-slate-100">
+                    className="flex items-center justify-between text-lg font-medium text-foreground hover:text-purple-600 transition-colors py-3 border-b border-accent">
                     <span>Shopping Cart</span>
                     <Badge>3</Badge>
                   </Link>
@@ -244,7 +250,7 @@ export function Navigation() {
                   <Button
                     variant={"destructive"}
                     onClick={handleLogout}
-                    className="w-full h-10 rounded-xl">
+                    className="w-full h-10 rounded-xl p-2">
                     <LogOut className="h-4 w-4 mr-2" />
                     Logout
                   </Button>
