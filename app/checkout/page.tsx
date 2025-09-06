@@ -89,14 +89,14 @@ export default function CheckoutPage() {
    
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <Link href="/cart" className="flex items-center text-blue-600 hover:text-blue-700 mb-4">
+          <Link href="/cart" className="flex items-center text-purple-600 hover:text-purple-700 mb-4">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Cart
           </Link>
-          <h1 className="text-3xl font-bold text-slate-900">Checkout</h1>
+          <h1 className="text-3xl font-bold text-foreground">Checkout</h1>
         </div>
         
    
@@ -204,7 +204,7 @@ export default function CheckoutPage() {
                       <div className="flex justify-between">
                         <div>
                           <p className="font-medium">Standard Shipping</p>
-                          <p className="text-sm text-slate-600">5-7 business days</p>
+                          <p className="text-sm text-muted-foreground">5-7 business days</p>
                         </div>
                         <span className="font-medium">Free</span>
                       </div>
@@ -216,7 +216,7 @@ export default function CheckoutPage() {
                       <div className="flex justify-between">
                         <div>
                           <p className="font-medium">Express Shipping</p>
-                          <p className="text-sm text-slate-600">2-3 business days</p>
+                          <p className="text-sm text-muted-foreground">2-3 business days</p>
                         </div>
                         <span className="font-medium">$15.00</span>
                       </div>
@@ -245,7 +245,7 @@ export default function CheckoutPage() {
                     />
                     <div className="flex-1">
                       <h4 className="font-medium text-sm">{item.name}</h4>
-                      <p className="text-sm text-slate-600">Qty: {item.quantity}</p>
+                      <p className="text-sm text-muted-foreground">Qty: {item.quantity}</p>
                     </div>
                     <span className="font-medium">${item.price * item.quantity}</span>
                   </div>
@@ -255,15 +255,15 @@ export default function CheckoutPage() {
 
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-slate-600">Subtotal</span>
+                    <span className="text-muted-foreground">Subtotal</span>
                     <span>${getSubtotal().toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-600">Shipping</span>
+                    <span className="text-muted-foreground">Shipping</span>
                     <span>{getShipping() === 0 ? "Free" : `$${getShipping().toFixed(2)}`}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-600">Tax</span>
+                    <span className="text-muted-foreground">Tax</span>
                     <span>${getTax().toFixed(2)}</span>
                   </div>
                   <Separator />
@@ -291,7 +291,7 @@ export default function CheckoutPage() {
                   )}
                 </Button>
 
-                <div className="flex items-center justify-center space-x-2 text-sm text-slate-600">
+                <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
                   <Shield className="h-4 w-4" />
                   <span>Secure 256-bit SSL encryption</span>
                 </div>

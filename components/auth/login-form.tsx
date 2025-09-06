@@ -54,6 +54,7 @@ export function LoginForm({
     await signIn.email({
       email: values.email,
       password: values.password,
+      callbackURL:"/products",
       fetchOptions: {
         onSuccess: () => {
           toast.success("user logged in  successfully");
