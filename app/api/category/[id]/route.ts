@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 
 type Params = { params: { id: string } };
 
-export async function DELETE(_req:NextRequest,{params}:Params){
+export async function DELETE({params}:Params){
 
     const {id} =  params;
 
