@@ -1,23 +1,37 @@
-"use server"
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+<<<<<<< HEAD
 export async function DELETE(_req:Request, { params }: { params: { id: string }}) {
+=======
+type Params = { params: Promise<{ id: string }> };
+>>>>>>> 337f6a94d4e91d1fabbab60acb1a9f02a1fdc61a
 
-    const {id} = await params;
-    console.log(id);
-    
-    try {
-        if(!id) return NextResponse.json({error:"id not found"},{status:404,statusText:"id not found"}) ;
+export async function DELETE(_req: NextRequest, { params }: Params) {
+  const { id } = await params;
 
-         await prisma.category.delete({
-            where:{id}
-        })
+  if (!id)
+    return NextResponse.json({ error: "id is not defined" }, { status: 404 });
+  try {
+    const category = await prisma.category.findUnique({
+      where: { id },
+    });
 
-        return NextResponse.json({message:"delete category successfully"},{status:200})
+    if (!category)
+      return NextResponse.json(
+        { error: "category is not defined" },
+        { status: 404 }
+      );
 
-    } catch (error) {
-        return NextResponse.json({error:error},{status:401});
-    }
+    await prisma.category.delete({
+      where: { id },
+    });
 
+    return NextResponse.json(
+      { message: "category deleted successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json({ error: error }, { status: 500 });
+  }
 }

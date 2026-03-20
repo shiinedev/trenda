@@ -141,7 +141,6 @@ model Order {
   user       User        @relation(fields: [userId], references: [id],onDelete: Cascade)
   userId     String      @db.ObjectId
   items      OrderItem[]
-  payment    Payment?
 }
 
 model OrderItem {
@@ -171,9 +170,4 @@ enum OrderStatus {
   CANCELLED
 }
 
-enum PaymentStatus {
-  PENDING
-  COMPLETED
-  FAILED
-}
 

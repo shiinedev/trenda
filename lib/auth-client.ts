@@ -12,4 +12,5 @@ export const { signIn, signUp, useSession, signOut } = createAuthClient({
     },
   },
   plugins: [sentinelClient()],
+
 });

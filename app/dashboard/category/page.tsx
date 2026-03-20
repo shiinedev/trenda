@@ -14,7 +14,6 @@ import { categoryInput, categorySchema } from "@/app/lib/zodSchema"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { api } from "@/app/lib/apiClient"
 import { toast } from "sonner"
-
 import { Category } from "@prisma/client";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { ProductListSkeleton } from "@/components/skeletons/ProductSkeleton"
@@ -82,6 +81,8 @@ export default function CategoryManager() {
 
 
     const handleDelete = async (id: string) => {
+        console.log(id);
+        
         toast.error("is not allowed to  delete category for demo!")
        // await deleteMutation.mutateAsync(id)
     }
