@@ -1,8 +1,8 @@
-import prisma from "./prisma"
+import prisma from "./prisma";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
-
+import { dash } from "@better-auth/infra";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -12,8 +12,8 @@ export const auth = betterAuth({
     additionalFields: {
       role: {
         type: "string",
-        input:false,
-        default: "USER"
+        input: false,
+        default: "USER",
       },
     },
   },
@@ -32,11 +32,10 @@ export const auth = betterAuth({
       maxAge: 5 * 60,
     },
   },
-  advanced:{
-    database:{
-      generateId:false
-    }
-   
+  advanced: {
+    database: {
+      generateId: false,
+    },
   },
-  plugins: [nextCookies()],
+  plugins: [nextCookies(), dash()],
 });
