@@ -35,7 +35,6 @@ export function Navigation() {
   console.log(session);
 
   const handleLogout = async () => {
-    
     await signOut({
       fetchOptions: {
         onSuccess: () => {
@@ -47,13 +46,15 @@ export function Navigation() {
           toast.error("error logout in  user", {
             description: ctx.error.message,
           });
-          if (ctx.error.message.includes("403") || ctx.error.message.includes("Forbidden")) {
+          if (
+            ctx.error.message.includes("403") ||
+            ctx.error.message.includes("Forbidden")
+          ) {
             sessionStorage.clear();
             redirect("/login");
           }
         },
       },
-
     });
   };
 
@@ -137,10 +138,9 @@ export function Navigation() {
                   </div>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                  {session?.user.role == "ADMIN" &&(
-                     <Link href="/dashboard">Dashboard</Link>
-                  )}
-                   
+                    {session?.user.role == "ADMIN" && (
+                      <Link href="/dashboard">Dashboard</Link>
+                    )}
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <Button
